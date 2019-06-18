@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+    Base HTML File
+    Tyler Vogel
+    06/11/2019
+-->
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cashify | {% block title %}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"</link>
+
+    {% block extra_css %}
+    {% endblock %}
+  </head>
+
+
+
+  <body>
+
+    {% block nav %}
+    {% endblock %}
+
+    <!--Title Bar-->
+    <div id="titleBar">
+      <a href="javascript:void(0)" id="navToggle" onClick="toggleNav()"></a>
+      
+      {% block titleBar %}
+      <!--Extra Title Bar-->
+      {% endblock %}
+    </div>
+
+    <div id="page-container">
+
+      <!--Content-->
+      <div id="page-wrapper">
+        
+
+
+        <!--Header-->
+        <section id="header" class="wrapper">
+          {% block header %}
+          {% endblock %}
+        </section>
+
+        <!--Intro-->
+        <section id="intro" class="wrapper style1">
+          {% block intro %}
+          {% endblock %}
+        </section>
+
+        <!--Main-->
+        <section id="main" class="wrapper style2">
+          {% block main %}
+          {% endblock %}
+        </section>
+      </div>
+
+    </div>
+
+
+
+    <!--JavaScript-->
+    <script src="{{ url_for('static', filename='main_frontend.js') }}"></script>
+    {% block js %}
+    {% endblock %}
+  </body>
+</html>

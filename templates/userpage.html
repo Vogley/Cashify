@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Homepage{% endblock %}
+
+
+{% block nav %}
+<!--Nav Bar-->
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" id="homeLink" onClick="scrollToTop()">Home</a>
+    <a href="javascript:void(0)" id="loginLink" onClick="scrollToLogin()">Logout</a>
+    <a href="#">Cashify Tools</a>
+    <a href="#">Your Account</a>
+    <a href="#">About</a>
+</div>
+{% endblock %}
+
+{% block titleBar %}
+<a href="javascript:void(0)" id="logoutBtn" onClick=""></a>
+{% endblock %}
+
+
+{% block header %}
+<!--Logo-->
+<div id="logo">
+    <h1>Cashify</h1>
+    <p>Welcome Back {{name}}</p>
+</div>
+{% endblock %}
+
+
+{% block intro %}
+<!--Title-->
+<div class="title">Transactions</div>
+
+<!--New Transaction-->
+<div id="transaction-container" class="container">
+    <div id="transactionInformation" class="font3">
+        This is the information about entering transactions. blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+        blah blah blah blah blah blah blah blah blah blah
+    </div>
+    <br/><br/><br/>
+    <h2 class="font2">Transaction Submission</h2>
+    <br/>
+    <form>
+        <div class="row">
+            <div class="col1">
+                <label for="transactionAmount">Transaction Amount</label>
+            </div>
+            <div class="col2">
+                <input type="text" id="transactionAmount" name="transactionAmount" placeholder="Transaction Amount...">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+                <label for="category">Category</label>
+            </div>
+            <div class="col2">
+                <select id="category" onchange="checkOther()">
+                    <option value="other">Other</option>
+                    <option value="income">Income</option>
+                    <option value="utilities">Utilities</option>
+                    <option value="rent">Rent</option>
+                    <option value="auto">Auto + Gas</option>
+                    <option value="education">Education</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="groceries">Groceries</option>
+                    <option value="restaurants">Restaurants</option>
+                    <option value="home">Home Improvement</option>
+                    <option value="shopping">Shopping</option>
+                    <option value="entertainment">Entertainment</option>
+                    <option value="travel">Travel</option>
+                    <option value="savings">Savings</option>
+                    <option value="newCategory">New Category</option>
+                </select>
+                <input type="text" id="newCategory" name="newCategory" placeholder="New Category..." disabled>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block main %}
+{% endblock %}

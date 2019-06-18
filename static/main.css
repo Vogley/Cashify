@@ -1,0 +1,475 @@
+/*Catch-All*/
+html, body, div, span, applet, object,
+iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+pre, a, abbr, acronym, address, big, cite,
+code, del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var, b,
+u, i, center, dl, dt, dd, ol, ul, li, fieldset,
+form, label, legend, table, caption, tbody,
+tfoot, thead, tr, th, td, article, aside,
+canvas, details, embed, figure, figcaption,
+footer, header, hgroup, menu, nav, output, ruby,
+section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+    vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;}
+    
+html, body {
+    min-height: 100%;
+}
+
+body {
+    line-height: 1;
+    -webkit-text-size-adjust: none;
+}
+
+ol, ul {
+  list-style-type: none;
+}
+  
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+/* Container Responsive Design */
+.container {
+    margin: 0 auto;
+    max-width: 100%;
+    width: 75em;
+}
+
+    @media screen and (max-width: 1680px) {
+        .container {
+            width: calc(100% - 120px);
+        }
+    }
+
+    @media screen and (max-width: 1280px) {
+        .container {
+            width: calc(100% - 100px);
+        }
+    }
+
+    @media screen and (max-width: 980px) {
+        .container {
+            width: calc(100% - 100px);
+        }
+    }
+
+    @media screen and (max-width: 736px) {
+        .container {
+            width: calc(100% - 40px);
+        }
+    }
+
+/* Page Container */
+#page-container {
+    transition: all 0.7s ease;
+    margin: 0 auto;
+    max-width: 100%;
+    z-index: -1;
+    margin-left: 0;
+    overflow: auto;
+    transform: translateX(0);
+}
+
+
+/* Wrapper */
+.wrapper {
+    position: relative;
+    padding: 6em 0 9em 0;
+}
+
+    .wrapper .title {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        text-align: center;
+        text-transform: uppercase;
+        display: block;
+        font-weight: 700;
+        letter-spacing: 0.25em;
+        font-size: 0.9em;
+        width: 25em;
+        height: 3.25em;
+        top: -3.25em;
+        line-height: 3.25em;
+        margin-bottom: -3.25em;
+        margin-left: -12.5em;
+        padding-top: 0.5em;
+    }
+
+        .wrapper .title::before {
+            content: '';
+            position: absolute;
+            bottom: -31px;
+            left: -35px;
+            width: 35px;
+            height: 38px;
+            background: url("images/shadow.png");
+        }
+
+        .wrapper .title::after {
+            transform: scaleX(-1);
+            content: '';
+            position: absolute;
+            bottom: -31px;
+            right: -35px;
+            width: 35px;
+            height: 38px;
+            background: url("images/shadow.png");
+        }
+
+    .wrapper.style1 {
+        background: rgb(55, 167, 10) url(images/cardboard.png);
+        color: #eee;
+    }
+        .wrapper.style1 .title{
+            background:  rgb(55, 167, 10) url(images/cardboard.png);
+            color: #fff;
+        }
+
+    .wrapper.style2 {
+        background: rgb(223, 223, 223) url(images/cardboard.png);
+        color: #484d55;
+    }
+
+
+
+/* Page Wrapper */
+#page-wrapper {
+    position: relative;
+    margin-bottom: 0;
+}
+
+
+
+/* Header */
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 24em;
+    background: url("images/banner.jpg") center center;
+    background-size: cover;
+    padding: 0;
+}
+
+    #header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("images/overlay_shadow.png");
+    }
+
+
+
+/* Intro */
+#intro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 2.5em 0 1em 0;
+}
+
+/* Main */
+#main {
+    display: flex;
+    position: relative;
+    min-height: 50px;
+}
+
+
+/* Logo */
+#logo {
+    width: 100%;
+    text-align: center;
+    position: relative;
+    top: 1.5em;
+}
+
+    #logo h1 {
+        font-weight: 900;
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 2.3em;
+        letter-spacing: 0.25em;
+    }
+
+    #logo p {
+        color: #eee;
+        color: rgba(255, 255, 255, 0.5);
+        text-transform: uppercase;
+        margin: 1.25em 0 0 0;
+        display: block;
+        letter-spacing: 0.2em;
+        font-size: 0.9em;
+    }
+
+
+
+/* Title Bar */
+#titleBar {
+    backface-visibility: hidden;
+    display: block;
+    height: 44px;
+    left: 0;
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 10001;
+    background: none;
+    transition: all 0.7s ease;
+}
+
+    #titleBar #navToggle {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 60px;
+        height: 44px;
+    }
+        #titleBar #navToggle::before {
+            text-decoration: none;
+            content: '\f0c9';
+            font-size: large;
+            position: fixed;
+            top: 6px;
+            left: 6px;
+            display: block;
+            width: 54px;
+            height: 38px;
+            line-height: 38px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.75);
+            background-color: rgba(92, 95, 103, 0.5);
+            border-radius: 0.25em;
+        }
+    
+    #titleBar #logoutBtn {
+        position: fixed;
+        top: 0;
+        left: 54px;
+        width: 60px;
+        height: 44px;
+    }
+        #titleBar #logoutBtn::before {
+            text-decoration: none;
+            content: 'Logout';
+            font-size: large;
+            position: fixed;
+            top: 6px;
+            right: 12px;
+            display: block;
+            width: 64px;
+            height: 38px;
+            line-height: 38px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.75);
+            background-color: rgba(92, 95, 103, 0.5);
+            border-radius: 0.25em;
+        }
+
+
+        
+/* Nav Bar */
+.sidenav {
+    display:  block;
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transform: translateX(-250px);
+    transition: all 0.7s ease;
+    padding-top: 10px;
+}
+
+    .sidenav a {
+        padding: 8px 8px 8px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        display: block;
+        transition: all 0.7s ease;
+    }
+
+    .sidenav a:hover {
+        color: #f1f1f1;
+    }
+
+    @media screen and (max-height: 450px) {
+        .sidenav {padding-top: 15px;}
+        .sidenav a {font-size: 18px;}
+      }
+
+
+
+/* From CSS */
+#form-container {
+    columns: 2 400px;
+    column-gap: 10em;
+    column-rule: dashed 1px rgb(55, 167, 10);
+}
+    #form-container input[type=submit] {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    
+    #form-container .col1 {
+    float: left;
+    width: 20%;
+    margin-top: 6px;
+    }
+
+    #form-container .col2 {
+    float: left;
+    width: 80%;
+    margin-top: 6px;
+    }
+
+#transaction-container {
+    columns: 2 370px;
+    column-gap: 7em;
+    column-rule: dashed 1px rgb(53, 53, 53);
+}
+    #transaction-container input[type=submit] {
+        background-color: rgb(53, 53, 53);
+        color: white;
+    }
+
+    #transaction-container .col1 {
+        float: left;
+        width: 30%;
+        margin-top: 6px;
+    }
+
+    #transaction-container .col2 {
+        float: left;
+        width: 70%;
+        margin-top: 6px;
+    }
+
+#transactionInformation
+{
+    min-height: 9.5em;
+}
+
+.font1 {
+    font-size: 1.875em;
+    color: rgb(55, 167, 10);
+}
+
+.font2 {
+    font-size: 1.875em;
+    color: rgb(53, 53, 53);
+}
+
+.placeHolder {
+    visibility: hidden;
+}
+
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+select {
+  width: fit-content;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  height: 3.6em;
+}
+
+#newCategory {
+    display: none;
+    margin-top: 6px;
+}
+
+label {
+  padding: 12px 12px 12px 0;
+  display: inline-block;
+}
+
+input[type=submit] {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  float: right;
+  margin-top: 6px;
+}
+
+    input[type=submit]:hover {
+        background-color: #45a049;
+    }
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Remove the placeHolders */
+@media screen and (max-width: 1060px) {
+    .placeHolder {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 952px) {
+    #transactionInformation
+    {
+        min-height: 0em;
+    }
+}
+
+/* Responsive layout - when the screen is less than 600px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  #form-container .col1, #form-container .col2 {
+    width: 100%;
+    margin-top: 0px;
+  }
+
+  #transaction-container .col1, #transaction-container .col2 {
+    width: 95%;
+    margin-top: 0px;
+  }
+
+  input[type=submit] {
+    margin-top: 6px;
+  }
+
+  .placeHolder {
+      display: none;
+  }
+}
+
+

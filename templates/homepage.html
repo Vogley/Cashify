@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block title %}Homepage{% endblock %}
+
+{% block nav %}
+<!--Nav Bar-->
+<div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" id="homeLink" onClick="scrollToTop()">Home</a>
+    <a href="javascript:void(0)" id="loginLink" onClick="scrollToLogin()">Login</a>
+    <a href="#">Cashify Tools</a>
+    <a href="#">About</a>
+</div>
+{% endblock %}
+
+{% block header %}
+<!--Logo-->
+<div id="logo">
+    <h1>Cashify</h1>
+    <p>A new way to see money</p>
+</div>
+{% endblock %}
+
+
+{% block intro %}
+<!--Title Card-->
+<div class="title">What is Cashify?</div>
+<div class="info"></div>
+
+{% endblock %}
+
+
+{% block main %}
+<!--Home Page Form-->
+<div id="form-container" class="container">
+    <!--Sign In-->
+    <h2 class="font1">Sign-In</h2>
+    <form>
+        <div class="row">
+            <div class="col1">
+                <label for="username">Username</label>
+            </div>
+            <div class="col2">
+                <input type="text" id="username" name="username" placeholder="Your Username...">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+                <label for="password">Password</label>
+            </div>
+            <div class="col2">
+                <input type="password" id="password" name="password" placeholder="Your Password...">
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Sign-In">
+        </div>
+        <div class="row" class="placeHolder">
+            <div class="col1">
+                <!--PlaceHolder-->
+                <label class="placeHolder">placeHolder</label>
+            </div>
+            <div class="col2">
+                <!--PlaceHolder-->
+                <input type="text" class="placeHolder">
+            </div>
+        </div>
+        <div class="row" class="placeHolder">
+            <div class="col1">
+                <!--PlaceHolder-->
+                <label class="placeHolder">placeHolder</label>
+            </div>
+            <div class="col2">
+                <!--PlaceHolder-->
+                <input type="text" class="placeHolder">
+            </div>
+        </div>
+    </form>
+    <!--Register-->
+    <h2 class="font1">Registration</h2>
+    <form>
+        <div class="row">
+            <div class="col1">
+                <label for="rusername">Username</label>
+            </div>
+            <div class="col2">
+                <input type="text" id="rusername" name="rusername" placeholder="Your Username...">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+                <label for="rpassword">Password</label>
+            </div>
+            <div class="col2">
+                <input type="password" id="rpassword" name="rpassword" placeholder="Your Password...">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+                <label for="cpassword">Confirm Password</label>
+            </div>
+            <div class="col2">
+                <input type="password" id="cpassword" name="cpassword" placeholder="Your Password...">
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Register">
+        </div>
+    </form>
+</div>
+
+{% endblock %}
