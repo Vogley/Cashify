@@ -1,6 +1,6 @@
-from test_frontend import db
-from sqlalchemy.orm import relationship
+from flask_sqlalchemy import SQLAlchemy
 
+db = SQLAlchemy()
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,12 +8,10 @@ class User(db.Model):
     email = db.Column(db.String(80), unique=True)
     password_hash = db.Column(db.String(80))
     phone_number = db.Column(db.String(10), unique=True)
-    account = relationship('Account', uselist=False, back_populates="User")
+    account = db.relationship("Account", backref="user_name", lazy="select")
 
 
 class Account(db.Model):
     account_number = db.Column(db.Integer, primary_key=True)
     balance = db.Column(db.Float(precision=2))
-    user = relationship('User', back_populates='Account')
-
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
