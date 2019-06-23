@@ -27,14 +27,18 @@ def home():
     # if not, and the incoming request is via POST try to log them in
     elif request.method == "POST":
         usernames = [x.username for x in User.query.all()]
-        thisUsername = request.form["user"]
+        thisUsername = request.form["username"]
         thisPassword = request.form["password"]
-        if thisUsername is usernames:
+        print(thisUsername)
+        print(thisPassword)
+        print(usernames)
+        if thisUsername in usernames:
             session["username"] = thisUsername
-            user = User.query.all()
+            user = User.query.get(1)
             for u in User.query.all():
-                if u.username = thisUsername:
+                if u.username is thisUsername:
                     user = u
+            print(user.password_hash)
             if thisPassword is user.password_hash:
                 return render_template("userpage.html")
             else:
@@ -70,12 +74,15 @@ def init_dev_data():
     print("Initialized Connect 4 Database.")
 
 
-    u1 = User(username="Tyler")
+    u1 = User(username="Tyler", password_hash="Vogel")
 
     db.session.add(u1)
     db.session.commit()
     print("Added dummy data.")
 
+# needed to use sessions
+# note that this is a terrible secret key
+app.secret_key = "mySecret"
 
 if __name__ == "__main__":
     app.run(threaded=True)
