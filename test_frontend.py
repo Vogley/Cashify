@@ -5,7 +5,9 @@ import os
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:postgres@localhost:5432/cashify_dev'
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+    app.root_path, "main.db"
+)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
@@ -26,7 +28,7 @@ def home():
     elif request.method == "POST":
         usernames = [x.username for x in User.query.all]
         thisUsername = request.form["user"]
-        if thisUsername in Usernames:
+        if thisUsername in usernames:
             session["username"] = thisUsername
 
             return render_template("userpage.html")
@@ -81,10 +83,9 @@ def init_dev_data():
     u1 = User(username="Tyler")
 
     db.session.add(u1)
-    db.commit()
+    db.session.commit()
     print("Added dummy data.")
 
 
 if __name__ == "__main__":
-    x = 0
     app.run(threaded=True)
