@@ -26,17 +26,22 @@ def home():
 
     # if not, and the incoming request is via POST try to log them in
     elif request.method == "POST":
-        usernames = [x.username for x in User.query.all]
+        usernames = [x.username for x in User.query.all()]
         thisUsername = request.form["user"]
-        if thisUsername in usernames:
+        thisPassword = request.form["password"]
+        if thisUsername is usernames:
             session["username"] = thisUsername
-
-            return render_template("userpage.html")
+            user = User.query.all()
+            for u in User.query.all():
+                if u.username = thisUsername:
+                    user = u
+            if thisPassword is user.password_hash:
+                return render_template("userpage.html")
+            else:
+                return render_template("homepage.html")
         else:
-
             return render_template("homepage.html")
     else:
-        # if all else fails, offer to log them in
         return render_template("homepage.html")
 
 @app.route("/logout/")
@@ -47,21 +52,6 @@ def unlogger():
         return redirect(url_for("home"))
     else:
         return redirect(url_for("home"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # CLI Commands
 @app.cli.command("initdb")
