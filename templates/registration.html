@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<!--
+    Registration Page - Much different style so could not extend the base template
+    Tyler Vogel
+    06/11/2019
+-->
+
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Cashify | Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"</link>
+  </head>
+
+
+
+  <body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" id="homeLink" onClick="scrollToTop()">Home</a>
+        <a href="javascript:void(0)" id="loginLink" onClick="scrollToLogin()">Login</a>
+        <a href="#">Cashify Tools</a>
+        <a href="#">About</a>
+    </div>
+
+    <!--Title Bar-->
+    <div id="titleBar">
+      <a href="javascript:void(0)" id="navToggle" onClick="toggleNav()"></a>
+    </div>
+
+    <div id="page-container">
+
+      <!--Content-->
+      <div id="page-wrapper">
+        
+        <!--Header-->
+        <section id="reg-header">
+                <h1>Cashify Registration</h1>
+        </section>
+
+        <div id="reg-container" class="wrapper style1">
+            <div id="reg-content" class="wrapper style2">
+                <h2 class="font1">Registration</h2>
+                <form action="{{ url_for('home') }}" method="post">
+                    <div class="row">
+                        <div class="col1">
+                            <label for="rusername">Username</label>
+                        </div>
+                        <div class="col2">
+                            <input type="text" id="rusername" name="rusername" value={{ rusername }}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="rpassword">Password</label>
+                        </div>
+                        <div class="col2">
+                            <input type="password" id="rpassword" name="rpassword" value={{ rpassword }}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="cpassword">Confirm Password</label>
+                        </div>
+                        <div class="col2">
+                            <input type="password" id="cpassword" name="cpassword" value={{ cpassword }}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="email">E-mail</label>
+                        </div>
+                        <div class="col2">
+                            <input type="text" id="email" name="email" placeholder="Your E-mail...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="amount" class="popup" onmouseover="infoPopUp()" onmouseout="infoPopOff()">Starting Account Amount 
+                                    <p class="popuptext" id="myPopup">The Starting Account Amount is the amount of money that you wish to be placed in your account from the start. 
+                                                                      It is strongly recommend to enter in the <span style="color:limegreen">current amount of money</span> that 
+                                                                      is in your spending banking account.
+                                    </p>
+                            </label>
+                        </div>
+                        <div class="col2">
+                            <input type="number" step="0.01" id="amount" name="amount" placeholder="Starting Amount...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="submit" value="Register">
+                    </div>
+                </form>
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!--JavaScript-->
+    <script src="{{ url_for('static', filename='main_frontend.js') }}"></script>
+  </body>
+</html>

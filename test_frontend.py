@@ -29,16 +29,14 @@ def home():
         usernames = [x.username for x in User.query.all()]
         thisUsername = request.form["username"]
         thisPassword = request.form["password"]
-        print(thisUsername)
-        print(thisPassword)
-        print(usernames)
+        
         if thisUsername in usernames:
             session["username"] = thisUsername
             user = User.query.get(1)
             for u in User.query.all():
                 if u.username is thisUsername:
                     user = u
-            print(user.password_hash)
+
             if thisPassword is user.password_hash:
                 return render_template("userpage.html")
             else:
@@ -56,6 +54,19 @@ def unlogger():
         return redirect(url_for("home"))
     else:
         return redirect(url_for("home"))
+
+# Redirects user to registration page with their information.
+@app.route("/regRedirect/", methods=["POST"])
+def regRedirect():
+    rUsername = request.form["rusername"]
+    rPassword = request.form["rpassword"]
+    cPassword = request.form["cpassword"]   
+
+    return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+
+@app.route("/registration/")
+def registration():
+    return render_template("registration.html")
 
 # CLI Commands
 @app.cli.command("initdb")
