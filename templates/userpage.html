@@ -22,7 +22,7 @@
 <!--Logo-->
 <div id="logo">
     <h1>Cashify</h1>
-    <p>Welcome Back {{name}}</p>
+    <p>Welcome Back {{ user.username }}</p>
 </div>
 {% endblock %}
 
@@ -33,7 +33,7 @@
 
 <!--New Transaction-->
 <div id="transaction-container" class="container">
-    <div id="transactionInformation" class="font3">
+    <div id="transactionInformation">
         This is the information about entering transactions. blah blah blah blah blah
         blah blah blah blah blah blah blah blah blah blah
         blah blah blah blah blah blah blah blah blah blah
@@ -93,4 +93,105 @@
 {% endblock %}
 
 {% block main %}
+<div id="table-title">
+    <h2 class="font3">Receant Transactions</h2>
+</div>
+<div id="table-container" class="container">
+    <table>
+        <thead>
+            <tr class="style3">
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Balance</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$1000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+            <tr>
+                <td>Jan. 1st, 1970</td>
+                <td>$1000.00</td>
+                <td>Income</td>
+                <td>$2000.00</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 {% endblock %}

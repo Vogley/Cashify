@@ -22,23 +22,27 @@ def default():
 def home():
     # first check if the user is already logged in
     if "username" in session:
-        return render_template("userpage.html")
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username is session["username"]:
+                user = u
+    
+        return render_template("userpage.html", user=user)
 
     # if not, and the incoming request is via POST try to log them in
     elif request.method == "POST":
         usernames = [x.username for x in User.query.all()]
         thisUsername = request.form["username"]
         thisPassword = request.form["password"]
-        
         if thisUsername in usernames:
-            session["username"] = thisUsername
             user = User.query.get(1)
             for u in User.query.all():
                 if u.username is thisUsername:
                     user = u
-
-            if thisPassword is user.password_hash:
-                return render_template("userpage.html")
+            print(user.password_hash)
+            if thisPassword == user.password_hash:
+                session["username"] = thisUsername
+                return render_template("userpage.html", user=user)
             else:
                 return render_template("homepage.html")
         else:

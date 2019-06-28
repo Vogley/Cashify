@@ -34,11 +34,39 @@ body {
 ol, ul {
   list-style-type: none;
 }
-  
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
+
+/* General Styling */
+.style1 {
+    background: rgb(55, 167, 10) url(images/cardboard.png);
+    color: #eee;
 }
+
+.style2 {
+    background: rgb(223, 223, 223) url(images/cardboard.png);
+    color: #484d55;
+}
+
+.style3 {
+    background: url("images/banner.jpg") center center;;
+    color: #eee;
+}
+
+.font1 {
+    font-size: 1.875em;
+    color: rgb(55, 167, 10);
+}
+
+.font2 {
+    font-size: 1.875em;
+    color: rgb(53, 53, 53);
+}
+
+.font3 {
+    font-size: 2em;
+    color: rgb(53, 53, 53);
+}
+
+
 
 
 /* Container Responsive Design */
@@ -75,11 +103,11 @@ table {
 /* Page Container */
 #page-container {
     transition: all 0.7s ease;
-    margin: 0 auto;
+    margin: 0;
     max-width: 100%;
     z-index: -1;
     margin-left: 0;
-    overflow: auto;
+    overflow: hidden;
     transform: translateX(0);
 }
 
@@ -130,19 +158,10 @@ table {
             background: url("images/shadow.png");
         }
 
-    .wrapper.style1 {
-        background: rgb(55, 167, 10) url(images/cardboard.png);
-        color: #eee;
-    }
-        .wrapper.style1 .title{
+        .wrapper .title{
             background:  rgb(55, 167, 10) url(images/cardboard.png);
             color: #fff;
         }
-
-    .wrapper.style2 {
-        background: rgb(223, 223, 223) url(images/cardboard.png);
-        color: #484d55;
-    }
 
 
 
@@ -191,7 +210,22 @@ table {
 #main {
     display: flex;
     position: relative;
-    min-height: 50px;
+    min-height: 552px;
+    padding: 6em 0 4em 0;
+    overflow: auto;
+}
+
+/* Footer */
+#footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    font-size: 10px
+}
+
+#copywrite {
+    padding: 1em 1em 1em 1em;
 }
 
 
@@ -375,16 +409,6 @@ table {
     min-height: 9.5em;
 }
 
-.font1 {
-    font-size: 1.875em;
-    color: rgb(55, 167, 10);
-}
-
-.font2 {
-    font-size: 1.875em;
-    color: rgb(53, 53, 53);
-}
-
 .placeHolder {
     visibility: hidden;
 }
@@ -517,7 +541,7 @@ input[type=submit] {
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-  }
+}
   
     /* The actual popup */
     .popup .popuptext {
@@ -554,13 +578,92 @@ input[type=submit] {
         animation: fadeIn 1s;
     }
   
-  /* Add animation (fade in the popup) */
-  @-webkit-keyframes fadeIn {
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
     from {opacity: 0;} 
     to {opacity: 1;}
-  }
+}
   
-  @keyframes fadeIn {
+@keyframes fadeIn {
     from {opacity: 0;}
     to {opacity:1 ;}
-  }
+}
+
+/* Transaction Table */
+#table-title {
+    top: 3.5em;
+    left: 3vw;
+    position: absolute;
+}
+
+#table-container {
+    width: 100%;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: absolute;
+}
+
+table {
+    border-spacing: 1;
+    border-collapse: collapse;
+    background: black;
+    border-radius: 10px;
+    border: black solid 2px;
+    overflow: hidden;
+    width: 95%;
+    margin: 0 auto;
+    position: relative;
+}
+
+table td, table th {
+    padding: 1em 0 0 1em;
+    text-align: left;
+}
+table thead tr {
+    height: 60px;
+    font-size: 18px;
+    line-height: 1.2;
+    font-weight: unset;
+}
+tbody tr {
+    height: 50px;
+    background: white;
+}
+    tbody tr {
+        font-size: 15px;
+        color: #808080;
+        line-height: 1.2;
+        font-weight: unset;
+    }
+        tbody tr:hover {
+            color: #555555;
+            background-color: #ddfcd6;
+            cursor: pointer;
+        }
+        tbody tr:last-child {
+            border: 0;
+        }
+        tbody tr:nth-child(even) {
+            background-color: #f5f5f5;
+        }
+        tbody tr:nth-child(even):hover {
+            background-color: #ddfcd6;
+        }
+
+@media screen and (max-width: 600px) {
+    table td, table th {
+        padding: 2vw 0 0 2vw;
+        text-align: left;
+    }
+    table thead tr {
+        height: 10vw;
+    }
+    tbody tr {
+        height: 8vw;
+    }
+        tbody tr {
+            font-size: 12px;
+        }
+}
