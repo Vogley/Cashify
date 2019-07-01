@@ -50,6 +50,17 @@ function checkOther(){
     }
 }
 
+//Pop-Up function
+function infoPopUp() {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+}
+
+function infoPopOff() {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+}
+
 //Sleep Function
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));

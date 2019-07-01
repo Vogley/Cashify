@@ -22,25 +22,27 @@ def default():
 def home():
     # first check if the user is already logged in
     if "username" in session:
-        return render_template("userpage.html")
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username is session["username"]:
+                user = u
+    
+        return render_template("userpage.html", user=user)
 
     # if not, and the incoming request is via POST try to log them in
     elif request.method == "POST":
         usernames = [x.username for x in User.query.all()]
         thisUsername = request.form["username"]
         thisPassword = request.form["password"]
-        print(thisUsername)
-        print(thisPassword)
-        print(usernames)
         if thisUsername in usernames:
-            session["username"] = thisUsername
             user = User.query.get(1)
             for u in User.query.all():
                 if u.username is thisUsername:
                     user = u
             print(user.password_hash)
-            if thisPassword is user.password_hash:
-                return render_template("userpage.html")
+            if thisPassword == user.password_hash:
+                session["username"] = thisUsername
+                return render_template("userpage.html", user=user)
             else:
                 return render_template("homepage.html")
         else:
@@ -56,6 +58,21 @@ def unlogger():
         return redirect(url_for("home"))
     else:
         return redirect(url_for("home"))
+
+# Redirects user to registration page with their information.
+@app.route("/registration/", methods=["POST"])
+def regRedirect():
+    rUsername = request.form["rusername"]
+    rPassword = request.form["rpassword"]
+    cPassword = request.form["cpassword"]   
+    if(rUsername != "" and rPassword != "" and cPassword != ""):
+        return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+    else:
+        return redirect(url_for("home"))
+
+@app.route("/registrationCheck/", method="POST")
+def registration():
+    return render_template("registration.html")
 
 # CLI Commands
 @app.cli.command("initdb")
