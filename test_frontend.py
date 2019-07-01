@@ -60,15 +60,17 @@ def unlogger():
         return redirect(url_for("home"))
 
 # Redirects user to registration page with their information.
-@app.route("/regRedirect/", methods=["POST"])
+@app.route("/registration/", methods=["POST"])
 def regRedirect():
     rUsername = request.form["rusername"]
     rPassword = request.form["rpassword"]
     cPassword = request.form["cpassword"]   
+    if(rUsername != "" and rPassword != "" and cPassword != ""):
+        return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+    else:
+        return redirect(url_for("home"))
 
-    return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
-
-@app.route("/registration/")
+@app.route("/registrationCheck/", method="POST")
 def registration():
     return render_template("registration.html")
 

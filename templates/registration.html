@@ -41,7 +41,7 @@
         <div id="reg-container" class="wrapper style1">
             <div id="reg-content" class="wrapper style2">
                 <h2 class="font1">Registration</h2>
-                <form action="{{ url_for('home') }}" method="post">
+                <form action="{{ url_for('registration') }}" method="post">
                     <div class="row">
                         <div class="col1">
                             <label for="rusername">Username</label>
@@ -64,6 +64,22 @@
                         </div>
                         <div class="col2">
                             <input type="password" id="cpassword" name="cpassword" value={{ cpassword }}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="rfirstname">First Name</label>
+                        </div>
+                        <div class="col2">
+                            <input type="text" id="rfirstname" name="rfirstname" placeholder="Your First Name...">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col1">
+                            <label for="rlastname">Last Name</label>
+                        </div>
+                        <div class="col2">
+                            <input type="text" id="rlastname" name="rlastname" placeholder="Your Last Name...">
                         </div>
                     </div>
                     <div class="row">
