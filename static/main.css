@@ -421,6 +421,20 @@ input[type=text], input[type=password], input[type=number] {
   resize: vertical;
 }
 
+#labelAmount { 
+    position: relative;
+    top: 5px;
+}
+
+#static {
+    position: relative;
+    top: 27.4px;
+    left: 4.3px;
+    background: white; 
+    color: black;     
+    font-size: 14px;
+}
+
 select {
   width: fit-content;
   border: 1px solid #ccc;
@@ -468,10 +482,14 @@ input[type=submit] {
     }
 }
 
-@media screen and (max-width: 952px) {
+@media screen and (max-width: 951px) {
     #transactionInformation
     {
         min-height: 0em;
+    }
+    #labelAmount { 
+        position: relative;
+        top: 20px;
     }
 }
 
