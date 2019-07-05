@@ -197,6 +197,8 @@ function repopulate(responseText) {
                 tempAmount = String(transactionList[i + 1]);
                 if(tempAmount.indexOf('.') == -1)
                     tempAmount = tempAmount + ".00";
+                if(tempAmount.indexOf('.') != -1 && tempAmount.length == tempAmount.indexOf('.') + 2)
+                    tempAmount = tempAmount + "0";
                 transactionAmount = "$" + tempAmount;
 
                 //Category Formatted
@@ -208,6 +210,8 @@ function repopulate(responseText) {
                 tempBalance = String(transactionList[i + 3]);
                 if(tempBalance.indexOf('.') == -1)
                     tempBalance = tempBalance + ".00";
+                if(tempBalance.indexOf('.') != -1 && tempBalance.length == tempBalance.indexOf('.') + 2)
+                    tempBalance = tempBalance + "0";
                 transactionBalance = "$" + tempBalance;
                 
                 addCells("td", newRow, transactionDate, transactionAmount, transactionCategory, transactionBalance);
