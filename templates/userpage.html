@@ -49,14 +49,13 @@
     </div>
     <br/><br/><br/>
     <h2 class="font2">Transaction Submission</h2>
-    <br/>
     <form>
         <div class="row">
             <div class="col1">
-                <label for="transactionAmount">Transaction Amount</label>
+                <label id="labelAmount" for="transactionAmount">Transaction Amount</label>
             </div>
             <div class="col2">
-                <input type="text" id="transactionAmount" name="transactionAmount" placeholder="Transaction Amount...">
+                <span id="static">$</span><input type="text" id="transactionAmount" name="transactionAmount" placeholder="0.00">
             </div>
         </div>
         <div class="row">
@@ -85,7 +84,7 @@
             </div>
         </div>
         <div class="row">
-            <input type="submit" value="Submit">
+            <input type="button" id="transactionBtn" value="Submit">
         </div>
     </form>
 </div>
@@ -97,8 +96,8 @@
     <h2 class="font3">Recent Transactions</h2>
 </div>
 <div id="table-container" class="container">
-    <table>
-        <thead>
+    <table id="transactionTable">
+        <thead id="thead">
             <tr class="style3">
                 <th>Date</th>
                 <th>Amount</th>
@@ -106,92 +105,14 @@
                 <th>Balance</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$1000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
-            <tr>
-                <td>Jan. 1st, 1970</td>
-                <td>$1000.00</td>
-                <td>Income</td>
-                <td>$2000.00</td>
-            </tr>
+        <tbody id="tbody">
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    var home = true;
+</script>
 {% endblock %}
