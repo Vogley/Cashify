@@ -4,8 +4,8 @@
 {% block nav %}
 <!--Nav Bar-->
 <div id="mySidenav" class="sidenav">
-    <a href="javascript:void(0)" id="homeLink" onClick="scrollToTop()">Home</a>
-    <a href="javascript:void(0)" id="loginLink" onClick="scrollToLogin()">Logout</a>
+        <a href="{{ url_for('home') }}">Home</a>
+    <a href="{{ url_for('unlogger') }}">Logout</a>
     <a href="#">Cashify Tools</a>
     <a href="#">Your Account</a>
     <a href="#">About</a>
@@ -13,7 +13,7 @@
 {% endblock %}
 
 {% block titleBar %}
-<a href="javascript:void(0)" id="logoutBtn" onClick=""></a>
+<a href="{{ url_for("unlogger") }}" id="logoutBtn"></a>
 {% endblock %}
 
 

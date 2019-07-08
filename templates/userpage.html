@@ -92,23 +92,49 @@
 {% endblock %}
 
 {% block main %}
-<div id="table-title">
-    <h2 class="font3">Recent Transactions</h2>
+
+
+<div id="finacialTools" class="style3">
+    <div class="imageR">
+            <div class="imageC" style="padding-left: 1vw">
+                    <a href="{{ url_for('trackerRedirect') }}">
+                        <img class="toolImg" src="/static/images/tracking.png" alt="Tracking">
+                    </a>
+            </div>
+            <div class="imageC">
+                    <a href="{{ url_for('budgetRedirect') }}">
+                        <img class="toolImg" src="/static/images/budget.png" alt="Budget">
+                    </a>
+            </div>
+            <div class="imageC" style="padding-right: 1vw">
+                    <a href="{{ url_for('predictionRedirect') }}">
+                        <img class="toolImg" src="/static/images/prediction.png" alt="Prediction">
+                    </a>
+            </div>
+    </div>
 </div>
-<div id="table-container" class="container">
-    <table id="transactionTable">
-        <thead id="thead">
-            <tr class="style3">
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Balance</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-        </tbody>
-    </table>
+
+
+<div id="transactionHistory">
+    <div id="table-title">
+        <h2 class="font3">Recent Transactions</h2>
+    </div>
+    <div id="table-container" class="container">
+        <table id="transactionTable">
+            <thead id="thead">
+                <tr class="style3">
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th>Category</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+        </table>
+    </div>
 </div>
+
 {% endblock %}
 
 {% block js %}
