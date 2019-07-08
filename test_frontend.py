@@ -9,6 +9,7 @@ import re
 app = Flask(__name__)
 api = Api(app)
 
+
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
     app.root_path, "connect4.db"
 )
@@ -16,7 +17,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
-
 
 
 '''*****RESTful Resources*****'''
@@ -33,12 +33,13 @@ class MyTransaction(Resource):
         db.session.commit()
         return '', 204
 
+
 # TransactionList
 # shows a list of all transactions, and lets you POST to add new transactions
 class TransactionList(Resource):
     def get(self):
         username = session["username"]
-       
+
         user = User.query.get(1)
         for u in User.query.all():
             if u.username == username:
@@ -71,12 +72,13 @@ class TransactionList(Resource):
         for u in User.query.all():
             if u.username == username:
                 user = u
-        
+
         account = user.account
         transactions = account.transactions
         tempBalance = account.balance + float(amount)
         account.balance = round(tempBalance, 2)
         balance = account.balance 
+
 
         dateX = datetime.now()
         date = myconverter(dateX)
@@ -88,6 +90,7 @@ class TransactionList(Resource):
         db.session.commit()
 
         return t.id, 201
+
 
 def myconverter(o):
     if isinstance(o, datetime):
@@ -112,15 +115,14 @@ api.add_resource(TransactionList, '/transactions')
 api.add_resource(MyTransaction, '/transactions/<transaction_id>')
 
 
-
-
 '''*****Webpage Functions*****'''
 # by default, direct to login
 @app.route("/")
 def default():
     return redirect(url_for("home"))
 
-#Login Function     
+
+# Login Function
 @app.route("/home/", methods=["GET", "POST"])
 def home():
     # first check if the user is already logged in
@@ -129,7 +131,7 @@ def home():
         for u in User.query.all():
             if u.username == session["username"]:
                 user = u
-    
+
         return render_template("userpage.html", user=user)
 
     # if not, and the incoming request is via POST try to log them in
@@ -153,6 +155,7 @@ def home():
     else:
         return render_template("homepage.html")
 
+
 @app.route("/logout/")
 def unlogger():
     # if logged in, log out, otherwise offer to log in
@@ -161,6 +164,7 @@ def unlogger():
         return redirect(url_for("home"))
     else:
         return redirect(url_for("home"))
+
 
 # Redirects user to registration page with their information.
 @app.route("/registration/", methods=["POST"])
@@ -172,6 +176,7 @@ def regRedirect():
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
         return redirect(url_for("home"))
+
 
 @app.route("/registrationCheck/", methods=["POST"])
 def registration():
@@ -223,6 +228,7 @@ def delate_account():
     else:
         return redirect(url_for("home"))
 
+
 # CLI Commands
 @app.cli.command("initdb")
 def init_db():
@@ -230,22 +236,28 @@ def init_db():
     db.drop_all()
     db.create_all()
 
-    print("Initialized Connect 4 Database.")
+    print("Initialized Cashify Database.")
+
 
 @app.cli.command("devinit")
 def init_dev_data():
     """Initializes database with data for development and testing"""
     db.drop_all()
     db.create_all()
-    print("Initialized Connect 4 Database.")
 
+    print("Initialized Cashify Database.")
     a1 = Account(balance=0.00)
     u1 = User(username="Tyler", password_hash="Vogel")
+    a2 = Account(balance=0.00)
+    u2 = User(username="Brian", password_hash="Torpey")
 
     db.session.add(a1)
     db.session.add(u1)
+    db.session.add(a2)
+    db.session.add(u2)
 
     u1.account = a1
+    u2.account = a2
 
     db.session.commit()
     print("Added dummy data.")
