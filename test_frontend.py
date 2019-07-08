@@ -127,7 +127,7 @@ def home():
     if "username" in session:
         user = User.query.get(1)
         for u in User.query.all():
-            if u.username is session["username"]:
+            if u.username == session["username"]:
                 user = u
     
         return render_template("userpage.html", user=user)
@@ -140,7 +140,7 @@ def home():
         if thisUsername in usernames:
             user = User.query.get(1)
             for u in User.query.all():
-                if u.username is thisUsername:
+                if u.username == thisUsername:
                     user = u
 
             if thisPassword == user.password_hash:
@@ -168,14 +168,60 @@ def regRedirect():
     rUsername = request.form["rusername"]
     rPassword = request.form["rpassword"]
     cPassword = request.form["cpassword"]   
-    if(rUsername != "" and rPassword != "" and cPassword != ""):
+    if rUsername != "" or rPassword != "" or cPassword != "":
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
         return redirect(url_for("home"))
-'''
-@app.route("/registrationCheck/", method="POST")
+
+@app.route("/registrationCheck/", methods=["POST"])
 def registration():
-    return render_template("registration.html")'''
+    usernames = [x.username for x in User.query.all()]
+    emails = [y.email for y in User.query.all()]
+    rFirstName = request.form["rfirstname"]
+    rLastName = request.form["rlastname"]
+    email = request.form["email"]
+    amount = request.form["amount"]
+    rUsername = request.form["rusername"]
+    rPassword = request.form["rpassword"]
+    cPassword = request.form["cpassword"]
+    if rusername in usernames or email in emails:
+        # username and email should be blank because one of them is already being used
+        return render_template("registration.html", rpassword=rPassword, cpassword=cPassword, rfirstname=rFirstName, rlastname=rLastName, amount=amount) 
+        '''TODO: I want to be able to return to the registration page with a notifcation about the username/email
+        already being used.  How can I do this?'''
+    elif rFirstName != "" or rLastName != "" or email != "" or amount != "" or rUsername != "" or rPassword != "" or cPassword != "":
+        return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+    else:
+        if rpassword == cpassword:
+            u1 = User(username=rusername, password_hash=rpassword, email=email, first_name=rFirstName, last_name=rLastName)
+            a1 = Account(balance=amount)
+
+            db.session.add(u1)
+            db.session.add(a1)
+
+            u1.account = a1
+
+            db.session.commit()
+            print("Added user to database")
+        else:
+            # don't reload cPassword because the passwords did not match
+            return render_template("registration.html", rusername=rUsername, rpassword=rPassword, rfirstname=rFirstName, rlastname=rLastName, email=email, amount=amount)
+            '''TODO: Add notification saying the passwords do not match'''
+    return render_template("homepage.html")
+
+@app.route("/delete_account/")
+def delate_account():
+    if "username" in session:
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == session["username"]:
+                for transaction in u.account.transactions:
+                    db.session.delete(transaction)
+                db.session.delete(u.account)
+                db.session.delete(u)
+                return redirect(url_for("home"))
+    else:
+        return redirect(url_for("home"))
 
 # CLI Commands
 @app.cli.command("initdb")
@@ -203,6 +249,7 @@ def init_dev_data():
 
     db.session.commit()
     print("Added dummy data.")
+
 
 # needed to use sessions
 # note that this is a terrible secret key
