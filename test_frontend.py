@@ -185,7 +185,8 @@ def registration():
     rPassword = request.form["rpassword"]
     cPassword = request.form["cpassword"]
     if rusername in usernames or email in emails:
-        return render_template("registration.html")
+        # username and email should be blank because one of them is already being used
+        return render_template("registration.html", rpassword=rPassword, cpassword=cPassword, rfirstname=rFirstName, rlastname=rLastName, amount=amount) 
         '''TODO: I want to be able to return to the registration page with a notifcation about the username/email
         already being used.  How can I do this?'''
     elif rFirstName != "" or rLastName != "" or email != "" or amount != "" or rUsername != "" or rPassword != "" or cPassword != "":
@@ -203,7 +204,8 @@ def registration():
             db.session.commit()
             print("Added user to database")
         else:
-            return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+            # don't reload cPassword because the passwords did not match
+            return render_template("registration.html", rusername=rUsername, rpassword=rPassword, rfirstname=rFirstName, rlastname=rLastName, email=email, amount=amount)
             '''TODO: Add notification saying the passwords do not match'''
     return render_template("homepage.html")
 
