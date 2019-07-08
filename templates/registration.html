@@ -47,7 +47,11 @@
                             <label for="rusername">Username</label>
                         </div>
                         <div class="col2">
+                            {% if rusername %}
                             <input type="text" id="rusername" name="rusername" value={{ rusername }}>
+                            {% else %}
+                            <input type="text" id="rusername" name="rusername" placeholder="Your Username...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -55,7 +59,11 @@
                             <label for="rpassword">Password</label>
                         </div>
                         <div class="col2">
+                            {% if rpassword %}
                             <input type="password" id="rpassword" name="rpassword" value={{ rpassword }}>
+                            {% else %}
+                            <input type="password" id="rpassword" name="rpassword" placeholder="Your Password...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -63,7 +71,11 @@
                             <label for="cpassword">Confirm Password</label>
                         </div>
                         <div class="col2">
+                            {% if cpassword %}
                             <input type="password" id="cpassword" name="cpassword" value={{ cpassword }}>
+                            {% else %}
+                            <input type="password" id="cpassword" name="cpassword" placeholder="Confirm Password...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -71,7 +83,11 @@
                             <label for="rfirstname">First Name</label>
                         </div>
                         <div class="col2">
+                            {% if rfirstname %}
+                            <input type="text" id="rfirstname" name="rfirstname" value={{ rfirstname }}>
+                            {% else %}
                             <input type="text" id="rfirstname" name="rfirstname" placeholder="Your First Name...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -79,7 +95,11 @@
                             <label for="rlastname">Last Name</label>
                         </div>
                         <div class="col2">
+                            {% if rlastname %}
+                            <input type="text" id="rlastname" name="rlastname" value={{ rlastname }}>
+                            {% else %}
                             <input type="text" id="rlastname" name="rlastname" placeholder="Your Last Name...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -87,7 +107,11 @@
                             <label for="email">E-mail</label>
                         </div>
                         <div class="col2">
+                            {% if email %}
+                            <input type="text" id="email" name="email" value={{ email }}>
+                            {% else %}
                             <input type="text" id="email" name="email" placeholder="Your E-mail...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
@@ -100,7 +124,11 @@
                             </label>
                         </div>
                         <div class="col2">
+                            {% if amount %}
+                            <input type="number" step="0.01" id="amount" name="amount" value={{ amount }}>
+                            {% else %}
                             <input type="number" step="0.01" id="amount" name="amount" placeholder="Starting Amount...">
+                            {% endif %}
                         </div>
                     </div>
                     <div class="row">
