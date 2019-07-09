@@ -172,7 +172,7 @@ def regRedirect():
     rUsername = request.form["rusername"]
     rPassword = request.form["rpassword"]
     cPassword = request.form["cpassword"]   
-    if rUsername != "" or rPassword != "" or cPassword != "":
+    if rUsername != "" and rPassword != "" and cPassword != "":
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
         return redirect(url_for("home"))
@@ -189,16 +189,17 @@ def registration():
     rUsername = request.form["rusername"]
     rPassword = request.form["rpassword"]
     cPassword = request.form["cpassword"]
-    if rusername in usernames or email in emails:
+    if rUsername in usernames or email in emails:
         # username and email should be blank because one of them is already being used
         return render_template("registration.html", rpassword=rPassword, cpassword=cPassword, rfirstname=rFirstName, rlastname=rLastName, amount=amount) 
         '''TODO: I want to be able to return to the registration page with a notifcation about the username/email
         already being used.  How can I do this?'''
-    elif rFirstName != "" or rLastName != "" or email != "" or amount != "" or rUsername != "" or rPassword != "" or cPassword != "":
+    elif rFirstName == "" or rLastName == "" or email == "" or amount == "" or rUsername == "" or rPassword == "" or cPassword == "":
+        print("hello");
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
-        if rpassword == cpassword:
-            u1 = User(username=rusername, password_hash=rpassword, email=email, first_name=rFirstName, last_name=rLastName)
+        if rPassword == cPassword:
+            u1 = User(username=rUsername, password_hash=rPassword, email=email, first_name=rFirstName, last_name=rLastName)
             a1 = Account(balance=amount)
 
             db.session.add(u1)
@@ -228,6 +229,20 @@ def delate_account():
     else:
         return redirect(url_for("home"))
 
+# Redirects user to Tracker page.
+@app.route("/tracking/", methods=["GET"])
+def trackerRedirect():
+    return render_template("tracker.html")
+
+# Redirects user to Budget page.
+@app.route("/budgeting/", methods=["GET"])
+def budgetRedirect():
+    return render_template("budgetTool.html")
+
+# Redirects user to Prediction page.
+@app.route("/predicting/", methods=["GET"])
+def predictionRedirect():
+    return render_template("predictionTool.html")
 
 # CLI Commands
 @app.cli.command("initdb")

@@ -29,6 +29,5 @@ class Transaction(db.Model):
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    amount_spent = db.Column(db.Float(precision=2))
-    budget = db.Column(db.Float(precision=2))
-    transactions = db.relationship("Transaction", backref="account_name", lazy="select") # May not need this here because transaction has a category column
+    name = db.Column(db.String(30), nullable=False)
+    account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
