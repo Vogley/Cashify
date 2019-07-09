@@ -122,7 +122,7 @@ function addTransaction() {
     var category = document.getElementById("category").value;
     if(category === "newCategory") {
         var newCategory = document.getElementById("newCategory").value;
-        data = "Amount=" + amount + "&Category=" + category;
+        data = "Amount=" + amount + "&Category=" + newCategory;
         //Will add functionality to new category later
     }
     else {

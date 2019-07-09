@@ -29,3 +29,31 @@
 <!--Title-->
 <div class="title">Prediction Tool</div>
 {% endblock %}
+
+{% block main %}
+<div id="table-title">
+    <h2 class="font3">Next Month Budget Prediction</h2>
+</div>
+<div id="graph-container" class="container">
+    <canvas id="predictionChart" width="400" height="400"></canvas>
+    <script>
+        let ctx = document.getElementById('predictionChart');
+        let budgetChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [1, 2, 5, 7],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)'
+                    ]
+                }]
+            }
+        });
+    </script>
+</div>
+{% endblock %}
