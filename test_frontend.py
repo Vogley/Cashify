@@ -244,7 +244,6 @@ def budgetRedirect():
 def predictionRedirect():
     return render_template("predictionTool.html")
 
-
 # CLI Commands
 @app.cli.command("initdb")
 def init_db():
