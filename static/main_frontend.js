@@ -68,11 +68,39 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+//Alert Button Setup. Type = 0 for danger, 1 for warning, 2 for info, 3 for success
+function addAlert(type, text){
+    var parent = document.getElementById("main");
+    var firstItem = document.getElementById("finacialTools");
+    var alert = document.createElement("div");
+    switch(type) {
+        case 0:
+            alert.setAttribute("class", "alert danger");
+        case 1:
+            alert.setAttribute("class", "alert warning");
+        case 2:
+            alert.setAttribute("class", "alert info");
+        case 3:
+            alert.setAttribute("class", "alert success");
+        default:
+            alert.setAttribute("class", "alert danger");
+    }
+    alert.innerHTML += text;
+
+    //Fade out
+    setTimeout(function(){ 
+        alert.style.opacity = "0";
+        setTimeout(function(){ alert.style.display = "none"; }, 600);
+    }, 2000)
+
+    parent.insertBefore(alert, firstItem);
+}
 
 
 /******************************* This is RESTful JS *******************************/
 var timeoutID;
 var timeout = 1000;
+var lastTransactionID = 0;
 
 function setup() {
     if(home == true)
@@ -106,8 +134,11 @@ function makeHandler(httpRequest, retCode, action) {
 	function handler() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === retCode) {
-				console.log("recieved response text:  " + httpRequest.responseText);
-				action(httpRequest.responseText);
+                //console.log("recieved response text:  " + httpRequest.responseText);
+                if(httpRequest.responseText.includes("Invalid"))    // User made a bad transaction post
+                    badPost();
+                else
+				    action(httpRequest.responseText);
 			} else {
 				alert("There was a problem with the request.  you'll need to refresh the page!");
 			}
@@ -115,7 +146,6 @@ function makeHandler(httpRequest, retCode, action) {
 	}
 	return handler;
 }
-
 
 function addTransaction() {
     var amount = document.getElementById("transactionAmount").value;
@@ -136,8 +166,8 @@ function poller() {
 	makeReq("GET", "/transactions", 200, repopulate);
 }
 
-function deleteTransaction(transactionID) {
-	makeReq("DELETE", "/transactions/" + transactionID, 204, poller);
+function deleteTransaction() {
+	makeReq("DELETE", "/transactions/" + lastTransactionID, 204, poller);
 }
 
 // helper function for repop:
@@ -185,7 +215,8 @@ function repopulate(responseText) {
         if(transactionList != null)
         {
             //The transactionlist is one huge string atm. A split can seperate them
-            for (i = transactionList.length-4; i >= 0; i-=4) {
+            for (i = transactionList.length-5; i >= 0; i-=5) {
+                
                 //Body Rows
                 newRow = document.createElement("tr");
                 
@@ -217,11 +248,24 @@ function repopulate(responseText) {
                 addCells("td", newRow, transactionDate, transactionAmount, transactionCategory, transactionBalance);
                 tbody.appendChild(newRow)
             }
+            //Update Delete Btn
+            lastTransactionID = transactionList[transactionList.length - 1];
         }
-    
         timeoutID = window.setTimeout(poller, timeout);
     }
 }
 
+//Bad Post
+function badPost(){
+    var transactionInput = document.getElementById("transactionAmount");
+    transactionInput.value = "";
+    addAlert(0, "Invalid Transaction Value. Please try again.");
+}
+
+/******************************* Webpage Setup *******************************/
 // setup load event
 window.addEventListener("load", setup, true);
+
+//Delete Btn Set Up
+deleteBtn = document.getElementById("deleteBtn");
+(function(){ deleteBtn.addEventListener("click", function() { deleteTransaction(); }); })();

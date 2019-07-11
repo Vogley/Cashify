@@ -29,6 +29,12 @@ parser.add_argument('Category')
 # Creates Games and Deletes Games
 class MyTransaction(Resource):
     def delete(self, transaction_id):
+        #Update Account Balance
+        t = Transaction.query.filter_by(id=transaction_id).first()
+        tAccount = Account.query.filter_by(id=t.account.id).first()
+        tAccount.balance -= t.amount
+        
+        #Delete Transaction
         Transaction.query.filter_by(id=transaction_id).delete()
         db.session.commit()
         return '', 204
@@ -56,6 +62,7 @@ class TransactionList(Resource):
                 transactionList.append(t.amount)
                 transactionList.append(t.category)
                 transactionList.append(t.current_balance)
+                transactionList.append(t.id)
             return transactionList
         else:
             return None
@@ -64,6 +71,10 @@ class TransactionList(Resource):
         args = parser.parse_args() 
         amount = args['Amount']      
         category = args['Category']
+
+        #Not a valid float
+        if re.match("^\d+\.*\d*$", amount) is None:
+            return "Invalid", 201
 
         # Get the user
         username = session["username"]
@@ -177,7 +188,7 @@ def regRedirect():
     else:
         return redirect(url_for("home"))
 
-
+# Registration of new user
 @app.route("/registrationCheck/", methods=["POST"])
 def registration():
     usernames = [x.username for x in User.query.all()]
@@ -195,7 +206,6 @@ def registration():
         '''TODO: I want to be able to return to the registration page with a notifcation about the username/email
         already being used.  How can I do this?'''
     elif rFirstName == "" or rLastName == "" or email == "" or amount == "" or rUsername == "" or rPassword == "" or cPassword == "":
-        print("hello");
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
         if rPassword == cPassword:
@@ -243,6 +253,7 @@ def budgetRedirect():
 @app.route("/predicting/", methods=["GET"])
 def predictionRedirect():
     return render_template("predictionTool.html")
+
 
 # CLI Commands
 @app.cli.command("initdb")
