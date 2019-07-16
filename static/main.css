@@ -363,6 +363,7 @@ ol, ul {
     columns: 2 400px;
     column-gap: 10em;
     column-rule: dashed 1px rgb(55, 167, 10);
+    margin-right: 30px;
 }
     #form-container input[type=submit] {
         background-color: #4CAF50;

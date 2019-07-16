@@ -1,14 +1,15 @@
+/******************************* Webpage Functions *******************************/
+function newDate(days) {
+    return moment().add(days, 'd');
+}
+
+
 /******************************* This is RESTful JS *******************************/
-var home = ture;
 var timeoutID;
 var timeout = 1000;
 
 function setup() {
-    if(home == true)
-    {
         makeReq("GET", "/predictionData", 200, plotData);
-        poller();
-    }
 }
 
 function makeReq(method, target, retCode, action, data) {
@@ -47,18 +48,80 @@ function makeHandler(httpRequest, retCode, action) {
 
 
 function plotData(responseText) {
-    console.log("populating!");
-    var linearEqn = JSON.parse(responseText);   //Should be an array of 5 items: slope, yintercept, year, month, and day of the last transaction
-    var slope = linearEqn[0], yintercept = linearEqn[1], year = linearEqn[2], month = linearEqn[3], day = linearEqn[4];
-    var dataPoints = {}
+    //Collecting data from python
+    console.log("populating chart!");
+    var response = JSON.parse(responseText);   //Should be an array of 3 items: slope, yintercept, and past 10 days of transactions
+    var slope = response[0], yintercept = response[1];
+    var dataPoints = [null, null, null, null, null, null, null, null, null, null, null];
+    var labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)]
+
+    //Only show prediction if there is valid data
+    if(response[0] != null) {
+        for(i = 0; i < 11; i++)
+            dataPoints[i] = (slope*i + yintercept).toFixed(2);
+    }
+
+    dataTransactions = response[2];
+    dataPrediction = [null, null, null, null, null, null, null, null, null, null];
+
+    //Setup chart labels
+    for(n = 0; n < 11; n++) {
+        if(n > 0)
+            labels.push(newDate(n));
+        dataPrediction.push(dataPoints[n]);
+    }   
+
+
+    //Plot Data on chart using chart.js
+    var config = {
+        type: 'line',
+        data: {
+            labels: labels,
+            datasets: [{
+            label: "Transactions",
+            data: dataTransactions,
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 0, 0, 1)",
+            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 0, 0, 1)",
+            }, 
+            {
+            label: "Prediction",
+            data: dataPrediction,
+            backgroundColor: "rgba(99, 164, 255, 0.2)",
+            borderColor: "rgba(99, 164, 255, 1)",
+            pointBorderColor: "rgba(0, 0, 255, 1)",
+            pointBackgroundColor: "rgba(99, 164, 255, 1)",
+            pointBorderColor: "rgba(0, 0, 255, 1)",
+            }]
+        },
+        options: {
+            scaleStartValue: 1,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: "day",
+                        displayFormats: {
+                            day: 'MMM D'
+                        }
+                    }
+                }],
+            },
+        }
+    };
     
-
-
-    for( var i = 0; i < 10; i++)
-        dataPoints[]
-        
+    let ctx = document.getElementById('predictionChart');
+    
+    //Dynamic height 
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    if(w < 450)
+        ctx.height = 300;
+    else
+        ctx.height = 200;
+    let budgetChart = new Chart(ctx, config);
 }
-
 
 /******************************* Webpage Setup *******************************/
 // setup load event
