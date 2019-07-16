@@ -11,7 +11,6 @@
     <title>Cashify | {% block title %}{% endblock %}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='main.css') }}"></link>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 
     {% block extra_css %}
     {% endblock %}
@@ -70,6 +69,8 @@
 
     <!--JavaScript-->
     <script src="{{ url_for('static', filename='main_frontend.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
     {% block js %}
     {% endblock %}
   </body>

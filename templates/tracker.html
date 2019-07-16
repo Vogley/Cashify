@@ -35,25 +35,51 @@
     <h2 class="font3">Your Transactions</h2>
 </div>
 <div id="graph-container" class="container">
-    <canvas id="trackerChart" width="400" height="400"></canvas>
-    <script>
-        let ctx = document.getElementById('trackerChart');
-        let budgetChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green'],
-                datasets: [{
-                    label: '# of Votes',
-                    data: [1, 2, 5, 7],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)'
-                    ]
-                }]
-            }
-        });
-    </script>
+    <canvas id="trackerChart"></canvas>
 </div>
+{% endblock %}
+
+{% block js %}
+<script>
+    function newDate(days) {
+        return moment().add(days, 'd');
+    }
+
+    var config = {
+        type: 'line',
+        data: {
+            labels: [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0), newDate(1), newDate(2), newDate(3), newDate(4), newDate(5), newDate(6), newDate(7), newDate(8), newDate(9), newDate(10)],
+            datasets: [{
+            label: "Transactions",
+            data: [25, 14.10, 32.54, 20.43, 28.25, 20, 11.10, 20.54, 56.43, 44.25, 30],
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            borderColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 0, 0, 1)",
+            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 0, 0, 1)",
+            }, 
+            {
+            label: "Prediction",
+            data: [null, null, null, null, null, null, null, null, null, null, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50],
+            borderColor: "#3e95cd",
+            fill: false
+            }]
+        },
+        options: {
+            scaleStartValue: 1,
+            scales: {
+                xAxes: [{
+                    type: 'time',
+                    time: {
+                        unit: "day"
+                    }
+                }],
+            },
+        }
+    };
+
+    let ctx = document.getElementById('trackerChart');
+    ctx.height = 200;
+    let budgetChart = new Chart(ctx, config);
+</script>
 {% endblock %}

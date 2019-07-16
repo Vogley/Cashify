@@ -2,7 +2,7 @@ from flask import Flask, request, session, render_template, abort, redirect, url
 from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from models import db, User, Account, Transaction
-from datetime import datetime
+from datetime import datetime, date, timedelta
 import os
 import re
 
@@ -99,6 +99,8 @@ class TransactionList(Resource):
         db.session.add(t)
         account.transactions.append(t)
         db.session.commit()
+
+        predict(account)
 
         return t.id, 201
 
@@ -242,17 +244,57 @@ def delate_account():
 # Redirects user to Tracker page.
 @app.route("/tracking/", methods=["GET"])
 def trackerRedirect():
-    return render_template("tracker.html")
+    if "username" in session:
+        return render_template("tracker.html")
+    else:
+        return redirect(url_for("home"))
 
 # Redirects user to Budget page.
 @app.route("/budgeting/", methods=["GET"])
 def budgetRedirect():
-    return render_template("budgetTool.html")
+    if "username" in session:
+        return render_template("budgetTool.html")
+    else:
+        return redirect(url_for("home"))
 
 # Redirects user to Prediction page.
 @app.route("/predicting/", methods=["GET"])
 def predictionRedirect():
-    return render_template("predictionTool.html")
+    if "username" in session:
+        return render_template("predictionTool.html")
+    else:
+        return redirect(url_for("home"))
+
+
+
+
+#Prediciton Algorithm, takes in an account everytime he/she enters in a new transaction
+def predict(account):
+    
+    now = datetime.now()
+    transactions = account.transactions
+    print(transactions[0].date)
+    tYear, tMonth, tDay = transactions[0].date[:4], transactions[0].date[5:7], transactions[0].date[8:]
+    oldestDate = date(tYear, tMonth, tDay)
+
+    minDate = now - datetime.timedelta(days=40)
+
+    #Transactions has been entered 40 or more days ago. Algorithm can procede
+    if(oldestDate - minDate < 0):
+        totalSum = 0    #var to keep track of user's balance in the last 40 days
+        slope = 0
+        yintercept = transactions[len(transactions) - 1]
+        #Process is to take the average growth or decline per day from the last 40 days.
+        for t in transactions:
+            tempYear, tempMonth, tempDay = transactions[0].date[:4], transactions[0].date[5:7], transactions[0].date[8:]
+            tDate = date(tempYear, tempMonth, tempDay)
+            if(tDate - minDate > 0):
+                totalSum += t.amount
+            
+            slope = totalSum/40   
+    
+
+
 
 
 # CLI Commands
