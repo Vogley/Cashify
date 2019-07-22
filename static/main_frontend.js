@@ -52,6 +52,16 @@ function checkOther(){
     }
 }
 
+function showBudgetCategories() {
+    var isChecked = document.getElementById("budgetByCategory").checked;
+    if (isChecked) {
+        document.getElementById("budgetByCategoryForm").hidden = false;
+    }
+    else {
+        document.getElementById("budgetByCategoryForm").hidden = true;
+    }
+}
+
 //Pop-Up function
 function infoPopUp() {
     var popup = document.getElementById("myPopup");
@@ -79,6 +89,11 @@ function setup() {
     {
         document.getElementById("transactionBtn").addEventListener("click", addTransaction, true);
         poller();
+    }
+    if (budget == true)
+    {
+        document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
+        budgetPoller();
     }
 }
 
@@ -132,8 +147,124 @@ function addTransaction() {
     makeReq("POST", "/transactions", 201, poller, data);
 }
 
+function addBudget() {
+    var budgetAmount = document.getElementById("budgetAmount").value;
+    var budgetByCategory = document.getElementById("budgetByCategory").checked;
+
+    //get category values
+    var incomeBudget = document.getElementById("incomeBudget").value;
+    var utilitiesBudget = document.getElementById("utilitiesBudget").value;
+    var rentBudget = document.getElementById("rentBudget").value;
+    var gasBudget = document.getElementById("gasBudget").value;
+    var educationBudget = document.getElementById("educationBudget").value;
+    var healthBudget = document.getElementById("healthBudget").value;
+    var groceriesBudget = document.getElementById("groceriesBudget").value;
+    var restaurantsBudget = document.getElementById("restaurantsBudget").value;
+    var homeBudget = document.getElementById("homeBudget").value;
+    var shoppingBudget = document.getElementById("shoppingBudget").value;
+    var entertainmentBudget = document.getElementById("entertainmentBudget").value;
+    var travelBudget = document.getElementById("travelBudget").value;
+    var savingsBudget = document.getElementById("savingsBudget").value;
+    var otherBudget = document.getElementById("otherBudget").value;
+    if(budgetByCategory) {
+
+        data = "Total Budget=" + budgetAmount + "&Income=" + incomeBudget +
+        "&Rent=" + rentBudget + "&Education=" + educationBudget + "&Groceries=" +
+        groceriesBudget + "&Home Improvement=" + homeBudget + "&Entertainment=" +
+        entertainmentBudget + "&Savings=" + savingsBudget + "&Utilities=" + utilitiesBudget +
+        "&Auto=" + gasBudget + "&Healthcare=" + healthBudget + "&Restaurants=" + restaurantsBudget +
+        "&Shopping=" + shoppingBudget + "&Travel=" + travelBudget + "&Other=" + otherBudget;
+        //Will add functionality to new category later
+    }
+    else {
+        data = "Total Budget=" + budgetAmount;
+    }
+    window.clearTimeout(timeoutID);
+    makeReq("PUT", "/budget", 201, budgetPoller, data);
+}
+
 function poller() {
 	makeReq("GET", "/transactions", 200, repopulate);
+}
+
+function budgetPoller() {
+    makeReq("GET", "/budget", 200, populateBudget);
+}
+
+function populateBudget(responseText) {
+    if (budget == true)
+    {
+        console.log("repopulating!");
+        var budgetString = JSON.parse(responseText);
+        console.log(budgetString);
+
+        tbody = document.getElementById("tbody");
+
+        //Header Row
+        budgetRow = document.getElementById("budgetRow");
+
+        //addCells("th", newRow, "Date", "Amount", "Category", "Balance");
+        //thead.appendChild(newRow);
+
+        // remove current budget
+        while (budgetRow.firstChild) {
+            budgetRow.removeChild(budgetRow.firstChild);
+        }
+
+        // get rid of create a budget text
+        if (budgetString != null) {
+            if (budgetString[1] == null) {
+                // hide all table headers that aren't the total amount column
+                var categoryHeaders = document.getElementsByClassName("categoryBudget");
+                for (var i = 0; i < categoryHeaders.length; i++) {
+                    categoryHeaders[i].hidden = true;
+                }
+                var totalBudget = document.createElement("td");
+
+                var tmp = String(budgetString[0]);
+
+                // format budget nicely
+                if(tmp.indexOf('.') == -1)
+                    tmp = tmp + ".00";
+                if(tmp.indexOf('.') != -1 && tmp.length == tmp.indexOf('.') + 2)
+                    tmp = tmp + "0";
+                totalBudget.innerHTML = "$" + tmp;
+
+                budgetRow.appendChild(totalBudget);
+
+            }
+            else {
+                // show all table headers
+                var categoryHeaders = document.getElementsByClassName("categoryBudget");
+                for (var i = 0; i < categoryHeaders.length; i++) {
+                    categoryHeaders[i].hidden = false;
+                }
+                for (var i = 0; i < budgetString.length; i++) {
+                    var e = document.createElement("td");
+
+                    var tmp = String(budgetString[i]);
+
+                    // format budget nicely
+
+                    if(tmp.indexOf('.') == -1)
+                        tmp = tmp + ".00";
+                    if(tmp.indexOf('.') != -1 && tmp.length == tmp.indexOf('.') + 2)
+                        tmp = tmp + "0";
+
+                    e.innerHTML = "$" + tmp;
+
+                    budgetRow.appendChild(e);
+                }
+            }
+        }
+        else {
+            var createBudgetText = document.createElement("td");
+            createBudgetText.innerHTML = "Create a budget above...";
+            createBudgetText.setAttribute("colspan", "15");
+            budgetRow.appendChild(createBudgetText);
+        }
+
+    }
 }
 
 function deleteTransaction(transactionID) {
@@ -171,7 +302,7 @@ function repopulate(responseText) {
         while (tab.rows.length > 0) {
             tab.deleteRow(0);
         }
-        
+
         thead = document.getElementById("thead");
         tbody = document.getElementById("tbody");
         
@@ -221,7 +352,26 @@ function repopulate(responseText) {
     
         timeoutID = window.setTimeout(poller, timeout);
     }
+
 }
+
+function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
+    var h1 = document.createElement(e)
+    var h2 = document.createElement(e)
+    var h3 = document.createElement(e)
+    var h4 = document.createElement(e)
+
+    h1.innerHTML = cell1;
+    h2.innerHTML = cell2;
+    h3.innerHTML = cell3;
+    h4.innerHTML = cell4;
+
+    row.appendChild(h1);
+    row.appendChild(h2);
+    row.appendChild(h3);
+    row.appendChild(h4);
+}
+
 
 // setup load event
 window.addEventListener("load", setup, true);
