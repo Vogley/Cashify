@@ -31,11 +31,19 @@
 {% endblock %}
 
 {% block main %}
-<!--<div id="table-title">
-    <h2 class="font3">Next Month Budget Prediction</h2>
-</div>-->
-<div id="graph-container" class="container">
-    <canvas id="predictionChart" width="400" height="400"></canvas>
+<div class="chart-container">
+    <div class="table-title">
+        <h2 class="font3">Account Prediction</h2>
+    </div>
+    <div id="graph-container" class="container">
+        <canvas id="predictionChart" width="400" height="400"></canvas>
+    </div>
+    <span id="daysOutDesc">Days into the Future:</span>
+    <select id="daysOut" onchange="daysOut()">
+            <option value="10">10 Days</option>
+            <option value="30">30 Days</option>
+            <option value="60">60 Days</option>
+    </select>
 </div>
 {% endblock %}
 

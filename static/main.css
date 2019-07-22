@@ -610,13 +610,13 @@ input[type=submit], input[type=button] {
 }
 
 /* Transaction Table */
-#transactionHistory {
+.chart-container {
     width: inherit;
     position: relative;
     margin-top: 3em;
 }
 
-#table-title {
+.table-title {
     top: -2em;
     left: 5%;
     position: absolute;
@@ -703,10 +703,12 @@ input[type=submit], input[type=button] {
 
 /* Chart Container */
 #graph-container {
+    border: rgb(53, 53, 53) solid 2px;
     position: relative;
     margin: auto;
-    height: 80vw;
-    width: 80vw;
+    padding: 2px;
+    height: 50vw;
+    width: 90vw;
 }
 
 
@@ -778,17 +780,21 @@ input[type=submit], input[type=button] {
 .alert.info {background-color: #2196F3;}
 .alert.warning {background-color: #ff9800;}
 
-.closebtn {
-  margin-left: 15px;
-  color: white;
-  font-weight: bold;
-  float: right;
-  font-size: 22px;
-  line-height: 20px;
-  cursor: pointer;
-  transition: 0.3s;
+
+/* Prediction */
+#daysOutDesc {
+    position: relative;
+    top: 0.5em;
+    left: 5vw;
+
 }
 
-.closebtn:hover {
-  color: black;
+#daysOut {
+    position: relative;
+    top: 0.7em;
+    left: 5vw;
+    height: 2.5em;
 }
+
+
+

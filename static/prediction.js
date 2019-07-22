@@ -3,6 +3,59 @@ function newDate(days) {
     return moment().add(days, 'd');
 }
 
+//Needed variables
+var predictionDays = 10;
+var budgetChart;
+var dataPoints = [null, null, null, null, null, null, null, null, null, null, null];
+var labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)];
+
+function daysOut() {
+    var value = document.getElementById("daysOut").value;
+    if(value != predictionDays) {
+        dataPrediction = [null, null, null, null, null, null, null, null, null, null];
+        labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)];
+
+        removeData(budgetChart);
+        //Setup chart labels
+        for(n = 0; n < 1+parseInt(value); n++) {
+            if(n > 0)
+                labels.push(newDate(n));
+            dataPrediction.push(dataPoints[n]);
+        }   
+
+        if(value == 60) {
+            budgetChart.options.elements.point.radius = 0;
+        }
+        else
+            budgetChart.options.elements.point.radius = 3;
+        //Update Chart
+        addData(budgetChart, labels, dataPrediction);
+
+        predictionDays = value;
+    }
+}
+
+//Add data to secondary dataset
+function addData(chart, label, data) {
+    while(label.length > 0) {
+        var date = label.shift();
+        chart.data.labels.push(date);
+        var dateData = data.shift();
+        chart.data.datasets[1].data.push(dateData);
+    }
+    chart.update();
+}
+
+//Clear data to secondary dataset
+function removeData(chart) {
+    console.log(chart.data.datasets[0].data);
+    while(chart.data.labels.length > 0)
+        chart.data.labels.pop();
+    while( chart.data.datasets[1].data.length > 0)
+        chart.data.datasets[1].data.pop();
+    chart.update();
+    console.log(chart.data.datasets[1].data);
+}
 
 /******************************* This is RESTful JS *******************************/
 var timeoutID;
@@ -52,12 +105,10 @@ function plotData(responseText) {
     console.log("populating chart!");
     var response = JSON.parse(responseText);   //Should be an array of 3 items: slope, yintercept, and past 10 days of transactions
     var slope = response[0], yintercept = response[1];
-    var dataPoints = [null, null, null, null, null, null, null, null, null, null, null];
-    var labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)]
 
     //Only show prediction if there is valid data
     if(response[0] != null) {
-        for(i = 0; i < 11; i++)
+        for(i = 0; i < 61; i++)
             dataPoints[i] = (slope*i + yintercept).toFixed(2);
     }
 
@@ -115,14 +166,19 @@ function plotData(responseText) {
     let ctx = document.getElementById('predictionChart');
     
     //Dynamic height 
-    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    if(w < 450)
-        ctx.height = 300;
-    else
-        ctx.height = 200;
-    let budgetChart = new Chart(ctx, config);
+    height = getHeight();
+    ctx.height = height;
+
+    budgetChart = new Chart(ctx, config);
 }
 
+function getHeight() {
+    var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    if(w < 450)
+        return 300
+    else
+        return 225
+}
 /******************************* Webpage Setup *******************************/
 // setup load event
 window.addEventListener("load", setup, true);

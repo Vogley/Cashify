@@ -90,6 +90,13 @@ class TransactionList(Resource):
             if u.username == username:
                 user = u
 
+        # Correcting the sign of the transaction
+        sign = checkSign(category)
+        if(sign == -1 and amount[:1] == "-"):
+            amount = float(amount)
+        else:
+            amount = float(amount)*sign
+
         account = user.account
         transactions = account.transactions
         tempBalance = account.balance + float(amount)
@@ -299,6 +306,35 @@ def dateConverter(o):
             day = o.day
 
         return "{}-{}-{}".format(o.year, month, day)
+
+# Function to check the sign of the category
+def checkSign(category):
+    firstC = category[:1]
+    if(firstC == "i"):      # Income
+        return 1
+    elif(firstC == "u"):    # Utilities
+        return -1
+    elif(firstC == "r"):    # Rent or Resturants
+        return -1
+    elif(firstC == "a"):    # Auto and Gas
+        return -1
+    elif(firstC == "e"):    # Education or Entertainment
+        return -1
+    elif(firstC == "h"):    # Healthcare or Home Improvement
+        return -1
+    elif(firstC == "g"):    # Grocieries
+        return -1
+    elif(firstC == "s"):    # Shopping or Savings
+        secondC = category[:2]
+        print(secondC)
+        if(secondC == "sh"):
+            return -1
+        else:
+            return 1
+    elif(firstC == "t"):    # Traveling
+        return -1
+    else:                   # Other Cases
+        return 1
 
 #Prediciton Algorithm, takes in an account everytime he/she enters in a new transaction
 def predict(transactions):
