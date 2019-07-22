@@ -10,12 +10,12 @@ class User(db.Model):
     first_name = db.Column(db.String(80))
     last_name = db.Column(db.String(80))
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
-    account = db.relationship("Account", foreign_keys=[account_id], backref="user_account")
+    account = db.relationship("Account", foreign_keys=[account_id], backref="user_id")
 
 
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    transactions = db.relationship("Transaction", backref="account_name", lazy="select")
+    transactions = db.relationship("Transaction", backref="account")
     balance = db.Column(db.Float(precision=2))
     categories = db.relationship("Category", backref="account_name", lazy="select") # Not sure if the lazy param is needed
     budget = db.relationship("Budget", backref="account_name", lazy="select", uselist=False)

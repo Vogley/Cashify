@@ -139,13 +139,26 @@ function addTransaction() {
         var newCategory = document.getElementById("newCategory").value;
         data = "Amount=" + amount + "&Category=" + newCategory;
         //Will add functionality to new category later
+
+//Alert Button Setup. Type = 0 for danger, 1 for warning, 2 for info, 3 for success
+function addAlert(type, text){
+    var parent = document.getElementById("main");
+    var firstItem = document.getElementById("finacialTools");
+    var alert = document.createElement("div");
+    switch(type) {
+        case 0:
+            alert.setAttribute("class", "alert danger");
+        case 1:
+            alert.setAttribute("class", "alert warning");
+        case 2:
+            alert.setAttribute("class", "alert info");
+        case 3:
+            alert.setAttribute("class", "alert success");
+        default:
+            alert.setAttribute("class", "alert danger");
+
     }
-    else {
-        data = "Amount=" + amount + "&Category=" + category;
-    }
-    window.clearTimeout(timeoutID);
-    makeReq("POST", "/transactions", 201, poller, data);
-}
+    alert.innerHTML += text;
 
 function addBudget() {
     var budgetAmount = document.getElementById("budgetAmount").value;
@@ -375,3 +388,14 @@ function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
 
 // setup load event
 window.addEventListener("load", setup, true);
+
+    //Fade out
+    setTimeout(function(){ 
+        alert.style.opacity = "0";
+        setTimeout(function(){ alert.style.display = "none"; }, 600);
+    }, 2000)
+
+    parent.insertBefore(alert, firstItem);
+}
+
+

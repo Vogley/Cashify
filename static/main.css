@@ -363,6 +363,7 @@ ol, ul {
     columns: 2 400px;
     column-gap: 10em;
     column-rule: dashed 1px rgb(55, 167, 10);
+    margin-right: 30px;
 }
     #form-container input[type=submit] {
         background-color: #4CAF50;
@@ -461,7 +462,7 @@ input[type=submit], input[type=button] {
   border-radius: 4px;
   cursor: pointer;
   float: right;
-  margin-top: 6px;
+  margin: 6px 6px 0 0;
 }
 
     input[type=button]:hover, input[type=submit]:hover {
@@ -609,13 +610,13 @@ input[type=submit], input[type=button] {
 }
 
 /* Transaction Table */
-#transactionHistory {
+.chart-container {
     width: inherit;
     position: relative;
     margin-top: 3em;
 }
 
-#table-title {
+.table-title {
     top: -2em;
     left: 5%;
     position: absolute;
@@ -700,13 +701,14 @@ input[type=submit], input[type=button] {
 }
 
 
+/* Chart Container */
 #graph-container {
-    width: 50%;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: absolute;
+    border: rgb(53, 53, 53) solid 2px;
+    position: relative;
+    margin: auto;
+    padding: 2px;
+    height: 50vw;
+    width: 90vw;
 }
 
 
@@ -763,11 +765,15 @@ input[type=submit], input[type=button] {
     }
 }
 
-@media screen and (max-width: 500px) {
-    .imageC {
-        width: 13.5vw;
-        padding: 2vw;
-    }
+/* Alerts */
+
+.alert {
+  padding: 20px;
+  background-color: #f44336;        /* Danger is the base color */
+  color: white;
+  opacity: 1;
+  transition: opacity 0.6s;
+  margin-bottom: 15px;
 }
 
 #budget-container {
@@ -801,5 +807,26 @@ input[type=submit], input[type=button] {
 #budgetInformation
 {
     min-height: 9.5em;
+}
+
+
+.alert.success {background-color: #4CAF50;}
+.alert.info {background-color: #2196F3;}
+.alert.warning {background-color: #ff9800;}
+
+
+/* Prediction */
+#daysOutDesc {
+    position: relative;
+    top: 0.5em;
+    left: 5vw;
+
+}
+
+#daysOut {
+    position: relative;
+    top: 0.7em;
+    left: 5vw;
+    height: 2.5em;
 }
 
