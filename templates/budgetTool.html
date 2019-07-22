@@ -30,72 +30,99 @@
 <div class="title">Budgeting Tool</div>
 
 <!--Set Budget-->
-<div id="transaction-container" class="container">
-    <div id="transactionInformation">
-        This is the information about setting a monthly budget. blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
+<div id="budget-container" class="container">
+    <div id="budgetInformation">
+        <h2 class="font2">Edit Budget</h2>
+        <form>
+            <div class="row">
+                <div class="col1">
+                    <label id="labelAmount" for="budgetAmount">Total Monthly Budget Amount</label>
+                </div>
+                <div class="col2">
+                    <span id="static">$</span><input type="text" id="budgetAmount" name="budgetAmount" placeholder="0.00">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col1">
+                    <input type="checkbox" id="budgetByCategory" name="budgetByCategory" onchange="showBudgetCategories()"><label for="category">Budget by Category<br><br></label>
+                </div>
+            </div>
+            <div id="budgetByCategoryForm" hidden>
+                <div class="row">
+                    <div class="col1">
+                    Income <input type="text" id="incomeBudget" name="incomeBudget" placeholder="0.00">
+                    Utilities <input type="text" id="utilitiesBudget" name="utilitiesBudget" placeholder="0.00">
+                    Rent <input type="text" id="rentBudget" name="rentBudget" placeholder="0.00">
+                    Auto + Gas <input type="text" id="gasBudget" name="gasBudget" placeholder="0.00">
+                    Education <input type="text" id="educationBudget" name="educationBudget" placeholder="0.00">
+                    </div>
+                    <div class="col2">
+                    Healthcare <input type="text" id="healthBudget" name="healthBudget" placeholder="0.00">
+                    Groceries <input type="text" id="groceriesBudget" name="groceriesBudget" placeholder="0.00">
+                    Restaurants <input type="text" id="restaurantsBudget" name="restaurantsBudget" placeholder="0.00">
+                    Home Improvement <input type="text" id="homeBudget" name="homeBudget" placeholder="0.00">
+                    Shopping <input type="text" id="shoppingBudget" name="shoppingBudget" placeholder="0.00">
+                    </div>
+                    <div class="col3">
+                    Entertainment <input type="text" id="entertainmentBudget" name="entertainmentBudget" placeholder="0.00">
+                    Travel <input type="text" id="travelBudget" name="travelBudget" placeholder="0.00">
+                    Savings <input type="text" id="savingsBudget" name="savingsBudget" placeholder="0.00">
+                    Other <input type="text" id="otherBudget" name="otherBudget" placeholder="0.00">
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <br/><br/><br/>
-    <h2 class="font2">Budget Submission</h2>
-    <form>
+
         <div class="row">
-            <div class="col1">
-                <label id="labelAmount" for="budgetAmount">Total Monthly Budget Amount</label>
-            </div>
-            <div class="col2">
-                <span id="static">$</span><input type="text" id="budgetAmount" name="budgetAmount" placeholder="0.00">
-            </div>
+            <input type="button" id="budgetBtn" value="Submit">
         </div>
-        <div class="row">
-            <div class="col1">
-                <label for="category">Budget by Category</label>
-            </div>
-            <div class="col2">
-                <select id="category" onchange="checkOther()">
-                    <option value="other">Other</option>
-                    <option value="income">Income</option>
-                    <option value="utilities">Utilities</option>
-                    <option value="rent">Rent</option>
-                    <option value="auto">Auto + Gas</option>
-                    <option value="education">Education</option>
-                    <option value="healthcare">Healthcare</option>
-                    <option value="groceries">Groceries</option>
-                    <option value="restaurants">Restaurants</option>
-                    <option value="home">Home Improvement</option>
-                    <option value="shopping">Shopping</option>
-                    <option value="entertainment">Entertainment</option>
-                    <option value="travel">Travel</option>
-                    <option value="savings">Savings</option>
-                    <option value="newCategory">New Category</option>
-                </select>
-                <input type="text" id="newCategory" name="newCategory" placeholder="New Category..." disabled>
-            </div>
-            <div class="col3">
-                <span id="static">$</span><input type="text" id="budgetCategoryAmount" name="budgetCategoryAmount" placeholder="0.00">
-            </div>
-        </div>
-        <div class="row">
-            <input type="button" id="transactionBtn" value="Submit">
-        </div>
-    </form>
 </div>
 
 {% endblock %}
 
 
 {% block main %}
+
+<div id="transactionHistory">
+    <div id="table-title">
+        <h2 class="font3">Your Monthly Budget</h2>
+    </div>
+    <div id="table-container" class="container">
+        <table id="transactionTable">
+            <thead id="thead">
+                <tr class="style3">
+                    <th id="totalColumn">Total Budget</th>
+
+                    <th id="incomeColumn" class="categoryBudget">Income</th>
+                    <th id="utilitiesColumn" class="categoryBudget">Utilities</th>
+                    <th id="rentColumn" class="categoryBudget">Rent</th>
+                    <th id="autoColumn" class="categoryBudget">Auto/Gas</th>
+                    <th id="educationColumn" class="categoryBudget">Education</th>
+                    <th id="healthcareColumn" class="categoryBudget">Healthcare</th>
+                    <th id="groceriesColumn" class="categoryBudget">Groceries</th>
+                    <th id="restaurantsColumn" class="categoryBudget">Restaurants</th>
+                    <th id="homeColumn" class="categoryBudget">Home Improvement</th>
+                    <th id="shoppingColumn" class="categoryBudget">Shopping</th>
+                    <th id="entertainmentColumn" class="categoryBudget">Entertainment</th>
+                    <th id="travelColumn" class="categoryBudget">Travel</th>
+                    <th id="savingsColumn" class="categoryBudget">Savings</th>
+                    <th id="otherColumn" class="categoryBudget">Other</th>
+
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr id="budgetRow">
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
 <div id="table-title">
-    <h2 class="font3">Monthly Budget Chart</h2>
+    <h2 class="font3"></h2>
 </div>
 <div id="graph-container" class="container">
     <canvas id="budgetChart" width="400" height="400"></canvas>
@@ -119,4 +146,13 @@
         });
     </script>
 </div>
+{% endblock %}
+
+
+
+{% block js %}
+<script>
+    var home = false;
+    var budget = true;
+</script>
 {% endblock %}

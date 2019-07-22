@@ -1,7 +1,7 @@
 from flask import Flask, request, session, render_template, abort, redirect, url_for, flash, make_response
 from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
-from models import db, User, Account, Transaction
+from models import db, User, Account, Transaction, Category, Budget
 from datetime import datetime, date, timedelta
 import os
 import re
@@ -11,9 +11,8 @@ app = Flask(__name__)
 api = Api(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-    app.root_path, "connect4.db"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/cashify_dev"
+
 # Suppress deprecation warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -24,6 +23,23 @@ db.init_app(app)
 parser = reqparse.RequestParser()
 parser.add_argument('Amount')
 parser.add_argument('Category')
+
+parser.add_argument('Total Budget')
+parser.add_argument('Income')
+parser.add_argument('Rent')
+parser.add_argument('Education')
+parser.add_argument('Groceries')
+parser.add_argument('Home Improvement')
+parser.add_argument('Entertainment')
+parser.add_argument('Savings')
+parser.add_argument('Utilities')
+parser.add_argument('Auto')
+parser.add_argument('Healthcare')
+parser.add_argument('Restaurants')
+parser.add_argument('Shopping')
+parser.add_argument('Travel')
+parser.add_argument('Other')
+
 
 
 # Transaction Resource
@@ -122,10 +138,116 @@ class MyPrediction(Resource):
         #User Information
         username = session["username"]
 
+
+# List
+# shows a list of all transactions, and lets you POST to add new transactions
+class UserBudget(Resource):
+    def get(self):
+        username = session["username"]
+
         user = User.query.get(1)
         for u in User.query.all():
             if u.username == username:
                 user = u
+
+        account = user.account
+        budget = account.budget
+
+        if budget:
+            budgetList = []
+            #budgetList will include the information of the user budget. Amount, date, and category. The last object is the user's account at that moment.
+            budgetList.append(budget.total_budget)
+            budgetList.append(budget.income)
+            budgetList.append(budget.rent)
+            budgetList.append(budget.education)
+            budgetList.append(budget.groceries)
+            budgetList.append(budget.home_improvement)
+            budgetList.append(budget.entertainment)
+            budgetList.append(budget.savings)
+            budgetList.append(budget.utilities)
+            budgetList.append(budget.auto_gas)
+            budgetList.append(budget.healthcare)
+            budgetList.append(budget.restaurants)
+            budgetList.append(budget.shopping)
+            budgetList.append(budget.travel)
+            budgetList.append(budget.other)
+            return budgetList
+        else:
+            return None
+
+    def put(self):
+        args = parser.parse_args()
+        total_budget = args['Total Budget']
+        income = args['Income']
+        rent = args['Rent']
+        education = args['Education']
+        groceries = args['Groceries']
+        home_improvement = args['Home Improvement']
+        entertainment = args['Entertainment']
+        savings = args['Savings']
+        utilities = args['Utilities']
+        auto_gas = args['Auto']
+        healthcare = args['Healthcare']
+        restaurants = args['Restaurants']
+        shopping = args['Shopping']
+        travel = args['Travel']
+        other = args['Other']
+
+        # Get the user
+        username = session["username"]
+
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == username:
+                user = u
+
+        account = user.account
+
+        # Create the Budget
+        b = Budget(account_id=account.id, total_budget=total_budget, income=income, rent=rent, education=education, groceries=groceries, home_improvement=home_improvement,
+                   entertainment=entertainment, savings=savings, utilities=utilities, auto_gas=auto_gas, healthcare=healthcare, restaurants=restaurants,
+                   shopping=shopping, travel=travel, other=other)
+
+        record = db.session.query(Budget).filter(Budget.account_id == account.id).first()
+
+        if record is None:
+            db.session.add(b)
+            account.budget = b
+
+        else:
+            record.total_budget = total_budget
+            record.income = income
+            record.rent = rent
+            record.education = education
+            record.groceries = groceries
+            record.home_improvement = home_improvement
+            record.entertainment = entertainment
+            record.savings = savings
+            record.utilities = utilities
+            record.auto_gas = auto_gas
+            record.healthcare = healthcare
+            record.restaurants = restaurants
+            record.shopping = shopping
+            record.travel = travel
+            record.other = other
+
+        db.session.commit()
+
+        return b.id, 201
+
+
+
+def myconverter(o):
+    if isinstance(o, datetime):
+        #Formatting
+        if(o.month < 10):
+            month = "0" + str(o.month)
+        else:
+            month = o.month
+        if(o.day < 10):
+            day = "0" + str(o.day)
+        else:
+            day = o.day
 
         account = user.account
         transactions = account.transactions
@@ -147,8 +269,8 @@ class MyPrediction(Resource):
 ##
 api.add_resource(TransactionList, '/transactions')
 api.add_resource(MyTransaction, '/transactions/<transaction_id>')
+api.add_resource(UserBudget, '/budget')
 api.add_resource(MyPrediction, '/predictionData')
-
 
 
 

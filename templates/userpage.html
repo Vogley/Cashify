@@ -138,5 +138,9 @@
 {% endblock %}
 
 {% block js %}
+<script>
+    var home = true;
+    var budget = false;
+</script>
 <script src="{{ url_for('static', filename='userpage.js') }}"></script>
 {% endblock %}

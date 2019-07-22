@@ -776,6 +776,40 @@ input[type=submit], input[type=button] {
   margin-bottom: 15px;
 }
 
+#budget-container {
+    columns: 1 370px;
+    column-gap: 7em;
+    column-rule: dashed 1px rgb(53, 53, 53);
+}
+    #budget-container input[type=button] {
+        background-color: rgb(53, 53, 53);
+        color: white;
+    }
+
+    #budget-container .col1 {
+        float: left;
+        width: 30%;
+        margin-top: 6px;
+    }
+
+    #budget-container .col2 {
+        float: left;
+        width: 30%;
+        margin-top: 6px;
+    }
+
+    #budget-container .col3 {
+        float: left;
+        width: 30%;
+        margin-top: 6px;
+    }
+
+#budgetInformation
+{
+    min-height: 9.5em;
+}
+
+
 .alert.success {background-color: #4CAF50;}
 .alert.info {background-color: #2196F3;}
 .alert.warning {background-color: #ff9800;}
@@ -795,6 +829,4 @@ input[type=submit], input[type=button] {
     left: 5vw;
     height: 2.5em;
 }
-
-
 
