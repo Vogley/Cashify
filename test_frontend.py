@@ -11,8 +11,9 @@ app = Flask(__name__)
 api = Api(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/cashify_dev"
-
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+    app.root_path, "cashify.db"
+)
 # Suppress deprecation warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -131,14 +132,6 @@ class TransactionList(Resource):
 
         return t.id, 201
 
-# Prediction Resource
-# Creates prediction data to be sent to javascript
-class MyPrediction(Resource):
-    def get(self):
-        #User Information
-        username = session["username"]
-
-
 # List
 # shows a list of all transactions, and lets you POST to add new transactions
 class UserBudget(Resource):
@@ -235,19 +228,17 @@ class UserBudget(Resource):
 
         return b.id, 201
 
+# Prediction Resource
+# Creates prediction data to be sent to javascript
+class MyPrediction(Resource):
+    def get(self):
+        #User Information
+        username = session["username"]
 
-
-def myconverter(o):
-    if isinstance(o, datetime):
-        #Formatting
-        if(o.month < 10):
-            month = "0" + str(o.month)
-        else:
-            month = o.month
-        if(o.day < 10):
-            day = "0" + str(o.day)
-        else:
-            day = o.day
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == username:
+                user = u
 
         account = user.account
         transactions = account.transactions
