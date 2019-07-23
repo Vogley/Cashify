@@ -124,37 +124,6 @@
 <div id="table-title">
     <h2 class="font3"></h2>
 </div>
-<div id="graph-container" class="container">
-    <canvas id="budgetChart" width="400" height="400"></canvas>
-    <script>
-        let ctx = document.getElementById('budgetChart');
-        let budgetChart = new Chart(ctx, {
-            type: 'pie',
-            data: {
-                labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restraunts', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
-                datasets: [{
-                    label: 'Overall Spending',
-                    data: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-                    backgroundColor: [
-                        'rgba(28, 200, 14, 0.2)',
-                        'rgba(70, 14, 200, 0.2)',
-                        'rgba(200, 142,14, 0.2)',
-                        'rgba(1, 4, 5, 0.2)',
-                        'rgba(224, 104, 6, 0.2)',
-                        'rgba(227, 238, 228, 0.2)',
-                        'rgba(238, 243, 252, 0.2)',
-                        'rgba(60, 83, 82, 0.2)',
-                        'rgba(42, 116, 81, 0.2)',
-                        'rgba(46, 68, 116, 0.2)',
-                        'rgba(236, 235, 234, 0.2)',
-                        'rgba(61, 219, 86, 0.2)',
-                        'rgba(0, 0, 0, 0.2)'
-                    ]
-                }]
-            }
-        });
-    </script>
-</div>
 {% endblock %}
 
 
@@ -164,4 +133,35 @@
     var home = false;
     var budget = true;
 </script>
+<div id="graph-container" class="container">
+        <canvas id="budgetChart" width="400" height="400"></canvas>
+        <script>
+            let ctx = document.getElementById('budgetChart');
+            let budgetChart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restraunts', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+                    datasets: [{
+                        label: 'Overall Spending',
+                        data: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
+                        backgroundColor: [
+                            'rgba(28, 200, 14)',
+                            'rgba(70, 14, 200)',
+                            'rgba(200, 142,14)',
+                            'rgba(238, 243, 252)',
+                            'rgba(1, 4, 5)',
+                            'rgba(224, 104, 6)',
+                            'rgba(227, 238, 228)',
+                            'rgba(60, 83, 82)',
+                            'rgba(42, 116, 81)',
+                            'rgba(46, 68, 116)',
+                            'rgba(236, 235, 234)',
+                            'rgba(61, 219, 86)',
+                            'rgba(0, 0, 0)'
+                        ]
+                    }]
+                }
+            });
+        </script>
+    </div>
 {% endblock %}
