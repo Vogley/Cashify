@@ -43,17 +43,14 @@
 <script>
     let ctx = document.getElementById('trackerChart');
     let budgetChart = new Chart(ctx, {
-        type: 'pie',
+        type: 'line',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green'],
+            labels: 'Amount Spent',
             datasets: [{
-                label: '# of Votes',
-                data: [1, 2, 5, 7],
+                label: '????',
+                data: [400, 300, 200, 400],
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
+                    'rgba(34, 211, 55, 1)'
                 ]
             }]
         }
