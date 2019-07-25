@@ -13,6 +13,7 @@ class User(db.Model):
     account = db.relationship("Account", foreign_keys=[account_id], backref="user_id")
 
 
+
 class Account(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     transactions = db.relationship("Transaction", backref="account")
@@ -27,6 +28,9 @@ class Transaction(db.Model):
     category = db.Column(db.String(20))
     current_balance = db.Column(db.Float(precision=2))
     account_id = db.Column(db.Integer, db.ForeignKey('account.id'))
+
+    def __str__(self):
+        return f'Transaction {self.id}: ({self.category}) {self.amount}'
 
 class Category(db.Model):
     id = db.Column(db.Integer, primary_key=True)

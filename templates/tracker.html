@@ -31,32 +31,31 @@
 {% endblock %}
 
 {% block main %}
-<div id="table-title">
-    <h2 class="font3">Your Transactions</h2>
+<div class="chart-container">
+    <div class="table-title">
+        <h2 class="font3">Your Transactions</h2>
+    </div>
+    <div id="graph-container" class="container">
+        <canvas id="trackerChart" width="400" height="400"></canvas>
+    </div>
+    <span id="daysOutDesc">Tracker Data:</span>
+    <select id="dataType" onchange="dataChange()">
+            <option value="total">Total Balance</option>
+            <option value="category">By Category</option>
+    </select>
+    <button id="toggle" onclick="toggleLegend()">Show Legend</button>
 </div>
-<div id="graph-container" class="container">
-    <canvas id="trackerChart"></canvas>
+<br/>
+<div class="chart-container">
+    <div class="table-title">
+        <h2 id="budgetTitle" class="font3">Month of </h2>
+    </div>
+    <div id="graph-container" class="container">
+        <canvas id="CategoryBars" width="400" height="400"></canvas>
+    </div>
 </div>
 {% endblock %}
 
 {% block js %}
-<script>
-    let ctx = document.getElementById('trackerChart');
-    let budgetChart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green'],
-            datasets: [{
-                label: '# of Votes',
-                data: [1, 2, 5, 7],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)'
-                ]
-            }]
-        }
-    });
-</script>
+<script src="{{ url_for('static', filename='tracker.js') }}"></script>
 {% endblock %}
