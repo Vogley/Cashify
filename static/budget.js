@@ -109,6 +109,7 @@ function makeHandler(httpRequest, retCode, action) {
 function addBudget() {
     var budgetAmount = document.getElementById("budgetAmount").value;
     var budgetByCategory = document.getElementById("budgetByCategory").checked;
+    var budgetPiechart;
 
     //get category values
     var incomeBudget = document.getElementById("incomeBudget").value;
@@ -160,6 +161,9 @@ function populateBudget(responseText) {
 
         //addCells("th", newRow, "Date", "Amount", "Category", "Balance");
         //thead.appendChild(newRow);
+
+        removeData(budgetPiechart);
+        addData(budgetPiechart, tbody, budgetRow);
 
         // remove current budget
         while (budgetRow.firstChild) {
@@ -257,10 +261,26 @@ function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
     row.appendChild(h4);
 }
 
+//helper functions for budget pie chart
+function removeData(chart){
+    console.log(chart.data.datasets[0].data);
+    while(chart.data.labels.length > 0)
+        chart.data.labels.pop();
+    while(chart.data.datasets[0].data.length > 0)
+        chart.data.datasets[0].data.pop();
+    chart.update();
+    console.log(chart.data.datasets[0].data);
+}
+
+function addData(chart, body, headers){
+    while(body.length > 0){
+        var category = body.shift();
+        chart.data.labels.push(category);
+        var rows = headers.shift();
+        chart.data.datasets[0].data.push(rows);
+    }
+}
 
 // setup load event
 window.addEventListener("load", setup, true);
-
-
-
 

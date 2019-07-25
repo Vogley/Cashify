@@ -2,6 +2,7 @@ from flask import Flask, request, session, render_template, abort, redirect, url
 from flask_restful import reqparse, abort, Api, Resource, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from models import db, User, Account, Transaction, Category, Budget
+from helper import separateTransactions, predict, checkSign, dateConverter, getLastMonthTransactions, getLastNDays
 from datetime import datetime, date, timedelta
 import os
 import re
@@ -19,8 +20,9 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 
-
-'''*****RESTful Resources*****'''
+'''***********************************************
+                RESTful Resources
+***********************************************'''
 parser = reqparse.RequestParser()
 parser.add_argument('Amount')
 parser.add_argument('Category')
@@ -169,22 +171,14 @@ class UserBudget(Resource):
             return None
 
     def put(self):
-        args = parser.parse_args()
-        total_budget = args['Total Budget']
-        income = args['Income']
-        rent = args['Rent']
-        education = args['Education']
-        groceries = args['Groceries']
-        home_improvement = args['Home Improvement']
-        entertainment = args['Entertainment']
-        savings = args['Savings']
-        utilities = args['Utilities']
-        auto_gas = args['Auto']
-        healthcare = args['Healthcare']
-        restaurants = args['Restaurants']
-        shopping = args['Shopping']
-        travel = args['Travel']
-        other = args['Other']
+        '''args = parser.parse_args()
+        total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other = 0
+        categories = [total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other]
+        arguments = ['Total Budget', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other']
+
+        for c in categories:
+            if(args['Total Budget'] != ""):
+
 
         # Get the user
         username = session["username"]
@@ -226,7 +220,7 @@ class UserBudget(Resource):
 
         db.session.commit()
 
-        return b.id, 201
+        return b.id, 201'''
 
 # Prediction Resource
 # Creates prediction data to be sent to javascript
@@ -255,6 +249,65 @@ class MyPrediction(Resource):
         return predictionResponse
 
 
+# Tracker Resource
+# Creates tracker data to be sent to javascript
+class MyTracker(Resource):
+    def get(self):
+        #User Information
+        username = session["username"]
+
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == username:
+                user = u
+
+        account = user.account
+        transactions = account.transactions
+        balance = account.balance
+        
+        #Seperate the Trasactions
+        # Transaction Array = ['Total Budget', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other']
+        categories = ["other", "income", "utilities", "rent", "auto", "education", "healthcare", "groceries", "restaurants", "home", "shopping", "entertainment", "travel", "savings"]
+        transactionArray = separateTransactions(transactions, categories)
+
+        #Retrieve the past transactions in this month
+        pastMonthTransactions = [getLastMonthTransactions(t) for t in transactionArray[1:]]
+        pastMonthTransactions.insert(0, transactions)
+
+        #Set up balances
+        balances = []
+        balances.append(round(balance, 2))
+        for ta in pastMonthTransactions[1:]:    #Skip the first one
+            tSum = 0
+            if(ta != None):
+                for t in ta:
+                    tSum += t.amount
+            balances.append(round(tSum, 2))
+
+        #Gather the data points
+        now = datetime.now().date()
+        firstDayOfMonth = date(now.year, now.month, 1)
+
+        userBudget = account.budget
+
+        #Get User's budgets
+        budgets = [ userBudget.other,  userBudget.income,  userBudget.utilities,  userBudget.rent, \
+             userBudget.auto_gas,  userBudget.education,  userBudget.healthcare,  userBudget.groceries, \
+                 userBudget.restaurants,  userBudget.home_improvement,  userBudget.shopping,  userBudget.entertainment, \
+                     userBudget.travel,  userBudget.savings]
+
+        #Gather the data points for each category
+        balanceIterator = 0
+        trackerResponse = []
+        trackerResponse.append(budgets)
+        trackerResponse.append(balances[1:])
+        for t in pastMonthTransactions:
+            trackerResponse.append(getLastNDays(t, balances[balanceIterator], abs(now-firstDayOfMonth).days))
+            balanceIterator+=1
+
+        return trackerResponse
+
+
 ##
 ## Actually setup the Api resource routing here
 ##
@@ -262,10 +315,13 @@ api.add_resource(TransactionList, '/transactions')
 api.add_resource(MyTransaction, '/transactions/<transaction_id>')
 api.add_resource(UserBudget, '/budget')
 api.add_resource(MyPrediction, '/predictionData')
+api.add_resource(MyTracker, '/trackerData')
 
 
 
-'''*****Webpage Redirections*****'''
+'''***********************************************
+                Webpage Redirects
+***********************************************'''
 # by default, direct to login
 @app.route("/")
 def default():
@@ -404,122 +460,12 @@ def predictionRedirect():
 
 
 
-'''*****Webpage Functionss*****'''
-# Function to change a dates format
-def dateConverter(o):
-    if isinstance(o, datetime):
-        #Formatting
-        if(o.month < 10):
-            month = "0" + str(o.month)
-        else:
-            month = o.month
-        if(o.day < 10):
-            day = "0" + str(o.day)
-        else:
-            day = o.day
-
-        return "{}-{}-{}".format(o.year, month, day)
-
-# Function to check the sign of the category
-def checkSign(category):
-    firstC = category[:1]
-    if(firstC == "i"):      # Income
-        return 1
-    elif(firstC == "u"):    # Utilities
-        return -1
-    elif(firstC == "r"):    # Rent or Resturants
-        return -1
-    elif(firstC == "a"):    # Auto and Gas
-        return -1
-    elif(firstC == "e"):    # Education or Entertainment
-        return -1
-    elif(firstC == "h"):    # Healthcare or Home Improvement
-        return -1
-    elif(firstC == "g"):    # Grocieries
-        return -1
-    elif(firstC == "s"):    # Shopping or Savings
-        secondC = category[:2]
-        print(secondC)
-        if(secondC == "sh"):
-            return -1
-        else:
-            return 1
-    elif(firstC == "t"):    # Traveling
-        return -1
-    else:                   # Other Cases
-        return 1
-
-#Prediciton Algorithm, takes in an account everytime he/she enters in a new transaction
-def predict(transactions):
-    now = datetime.now().date()
-    linearEqn = [None, None]
-
-    tYear, tMonth, tDay = int(transactions[0].date[:4]), int(transactions[0].date[5:7]), int(transactions[0].date[8:])
-    oldestDate = date(tYear, tMonth, tDay)
-
-    minDate = now - timedelta(days=40)
-
-    #Transactions has been entered 40 or more days ago. Algorithm can procede
-    if(oldestDate < minDate):
-        totalSum = 0    #var to keep track of user's balance in the last 40 days
-        slope = 0
-        yintercept = transactions[len(transactions) - 1].current_balance
-        #Process is to take the average growth or decline per day from the last 40 days. Only calculate from last 40 days.
-        for t in transactions:
-            tempYear, tempMonth, tempDay = int(t.date[:4]), int(t.date[5:7]), int(t.date[8:])
-            tDate = date(tempYear, tempMonth, tempDay)
-            if(minDate < tDate):
-                totalSum += t.amount
-            
-            slope = round(totalSum/40, 2)
-
-        linearEqn = [slope, yintercept]
-
-    return linearEqn  
-
-#Helper function for creating data points for the last N days
-def getLastNDays(transactions, balance, n):
-    now = datetime.now().date()
-    dateNDaysAgo = now - timedelta(days=n)
-    
-    #Fill with the n previous dates
-    pastNDays = []
-    for x in range(n):
-        pastNDays.append(now - timedelta(days=n-x))
-
-    pastNDays.append(now)  #For today's datapoint
-
-    #Fill all with the balance of today
-    pastNDaysBalance = []
-    for y in range(n+1):
-        pastNDaysBalance.append(balance)
-    
-    #Setup the previous n days of transactions
-    for t in transactions:
-        tempYear, tempMonth, tempDay = int(t.date[:4]), int(t.date[5:7]), int(t.date[8:])
-        tDate = date(tempYear, tempMonth, tempDay)
-        #Is a valid transaction
-        if(tDate > dateNDaysAgo):
-            i = 0
-            for day in pastNDays:
-                if(tDate > day):
-                    i += 1
-                else:
-                    break
-
-            if(i > 0):
-                while i > 0:
-                    pastNDaysBalance[i-1] -= t.amount
-                    pastNDaysBalance[i-1] = round(pastNDaysBalance[i-1], 2)
-                    i -= 1
-
-    return pastNDaysBalance
-    
 
 
 
-
-# CLI Commands
+'''***********************************************
+                CLI Commands
+***********************************************'''
 @app.cli.command("initdb")
 def init_db():
     """Initializes database and any model objects necessary for assignment"""
@@ -558,32 +504,32 @@ def init_dev_data():
     a1.transactions.append(t1)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t2 = Transaction(amount=amount, date="2019-05-11", category="Other", current_balance=round(balance, 2))
+    t2 = Transaction(amount=amount, date="2019-05-11", category="Income", current_balance=round(balance, 2))
     db.session.add(t2)
     a1.transactions.append(t2)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t3 = Transaction(amount=amount, date="2019-06-11", category="Other", current_balance=round(balance, 2))
+    t3 = Transaction(amount=amount, date="2019-06-11", category="Entertainment", current_balance=round(balance, 2))
     db.session.add(t3)
     a1.transactions.append(t3)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t4 = Transaction(amount=amount, date="2019-06-11", category="Other", current_balance=round(balance, 2))
+    t4 = Transaction(amount=amount, date="2019-06-11", category="Restaurants", current_balance=round(balance, 2))
     db.session.add(t4)
     a1.transactions.append(t4)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t5 = Transaction(amount=amount, date="2019-06-11", category="Other", current_balance=round(balance, 2))
+    t5 = Transaction(amount=amount, date="2019-06-11", category="Restaurants", current_balance=round(balance, 2))
     db.session.add(t5)
     a1.transactions.append(t5)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t6 = Transaction(amount=amount, date="2019-07-04", category="Other", current_balance=round(balance, 2))
+    t6 = Transaction(amount=amount, date="2019-07-04", category="Savings", current_balance=round(balance, 2))
     db.session.add(t6)
     a1.transactions.append(t6)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t7 = Transaction(amount=amount, date="2019-07-06", category="Other", current_balance=round(balance, 2))
+    t7 = Transaction(amount=amount, date="2019-07-06", category="Income", current_balance=round(balance, 2))
     db.session.add(t7)
     a1.transactions.append(t7)
     amount = round(random.uniform(1.00, 100.00), 2)
@@ -593,71 +539,79 @@ def init_dev_data():
     a1.transactions.append(t8)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t9 = Transaction(amount=amount, date="2019-07-10", category="Other", current_balance=round(balance, 2))
+    t9 = Transaction(amount=amount, date="2019-07-10", category="Groceries", current_balance=round(balance, 2))
     db.session.add(t9)
     a1.transactions.append(t9)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t10 = Transaction(amount=amount, date="2019-07-11", category="Other", current_balance=round(balance, 2))
+    t10 = Transaction(amount=amount, date="2019-07-12", category="Utilities", current_balance=round(balance, 2))
     db.session.add(t10)
     a1.transactions.append(t10)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t11 = Transaction(amount=amount, date="2019-07-12", category="Other", current_balance=round(balance, 2))
+    t11 = Transaction(amount=amount, date="2019-07-14", category="Other", current_balance=round(balance, 2))
     db.session.add(t11)
     a1.transactions.append(t11)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t12 = Transaction(amount=amount, date="2019-07-12", category="Other", current_balance=round(balance, 2))
+    t12 = Transaction(amount=amount, date="2019-07-15", category="Other", current_balance=round(balance, 2))
     db.session.add(t12)
     a1.transactions.append(t12)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t13 = Transaction(amount=amount, date="2019-07-10", category="Other", current_balance=round(balance, 2))
+    t13 = Transaction(amount=amount, date="2019-07-16", category="Income", current_balance=round(balance, 2))
     db.session.add(t13)
     a1.transactions.append(t13)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t14 = Transaction(amount=amount, date="2019-07-11", category="Other", current_balance=round(balance, 2))
+    t14 = Transaction(amount=amount, date="2019-07-18", category="Entertainment", current_balance=round(balance, 2))
     db.session.add(t14)
     a1.transactions.append(t14)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t15 = Transaction(amount=amount, date="2019-07-12", category="Other", current_balance=round(balance, 2))
+    t15 = Transaction(amount=amount, date="2019-07-19", category="Other", current_balance=round(balance, 2))
     db.session.add(t15)
     a1.transactions.append(t15)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t16 = Transaction(amount=amount, date="2019-07-12", category="Other", current_balance=round(balance, 2))
+    t16 = Transaction(amount=amount, date="2019-07-19", category="Auto", current_balance=round(balance, 2))
     db.session.add(t16)
     a1.transactions.append(t16)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t17 = Transaction(amount=amount, date="2019-07-13", category="Other", current_balance=round(balance, 2))
+    t17 = Transaction(amount=amount, date="2019-07-20", category="Income", current_balance=round(balance, 2))
     db.session.add(t17)
     a1.transactions.append(t17)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t18 = Transaction(amount=amount, date="2019-07-13", category="Other", current_balance=round(balance, 2))
+    t18 = Transaction(amount=amount, date="2019-07-22", category="Healthcare", current_balance=round(balance, 2))
     db.session.add(t18)
     a1.transactions.append(t18)
     amount = -round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t19 = Transaction(amount=amount, date="2019-07-14", category="Other", current_balance=round(balance, 2))
+    t19 = Transaction(amount=amount, date="2019-07-22", category="Restaurants", current_balance=round(balance, 2))
     db.session.add(t19)
     a1.transactions.append(t19)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t20 = Transaction(amount=amount, date="2019-07-15", category="Other", current_balance=round(balance, 2))
+    t20 = Transaction(amount=amount, date="2019-07-23", category="Other", current_balance=round(balance, 2))
     db.session.add(t20)
     a1.transactions.append(t20)
     amount = round(random.uniform(1.00, 100.00), 2)
     balance += amount
-    t21 = Transaction(amount=amount, date="2019-07-16", category="Other", current_balance=round(balance, 2))
+    t21 = Transaction(amount=amount, date="2019-07-24", category="Other", current_balance=round(balance, 2))
     db.session.add(t21)
     a1.transactions.append(t21)
 
     a1.balance = balance
+
+
+    #Setup Budget
+    b = Budget(income = 1000, rent = 200, education = 100, groceries = 50, 
+    home_improvement = 50, entertainment = 75, savings = 100, utilities = 25, \
+    auto_gas = 50, healthcare = 50, restaurants = 50, shopping = 50, travel = 100, other = 200)
+
+    a1.budget = b
 
     db.session.commit()
     print("Added dummy data.")

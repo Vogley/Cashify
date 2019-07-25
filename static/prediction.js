@@ -1,13 +1,14 @@
 /******************************* Webpage Functions *******************************/
+//Needed variables
+var predictionDays = 10;
+var predictionChart;
+var dataPoints = [null, null, null, null, null, null, null, null, null, null, null];
+var labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)];
+
+//Helper Function for plotData
 function newDate(days) {
     return moment().add(days, 'd');
 }
-
-//Needed variables
-var predictionDays = 10;
-var budgetChart;
-var dataPoints = [null, null, null, null, null, null, null, null, null, null, null];
-var labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)];
 
 function daysOut() {
     var value = document.getElementById("daysOut").value;
@@ -15,7 +16,7 @@ function daysOut() {
         dataPrediction = [null, null, null, null, null, null, null, null, null, null];
         labels = [newDate(-10), newDate(-9), newDate(-8), newDate(-7), newDate(-6), newDate(-5), newDate(-4), newDate(-3), newDate(-2), newDate(-1), newDate(0)];
 
-        removeData(budgetChart);
+        removeData(predictionChart);
         //Setup chart labels
         for(n = 0; n < 1+parseInt(value); n++) {
             if(n > 0)
@@ -24,12 +25,12 @@ function daysOut() {
         }   
 
         if(value == 60) {
-            budgetChart.options.elements.point.radius = 0;
+            predictionChart.options.elements.point.radius = 0;
         }
         else
-            budgetChart.options.elements.point.radius = 3;
+            predictionChart.options.elements.point.radius = 3;
         //Update Chart
-        addData(budgetChart, labels, dataPrediction);
+        addData(predictionChart, labels, dataPrediction);
 
         predictionDays = value;
     }
@@ -48,13 +49,11 @@ function addData(chart, label, data) {
 
 //Clear data to secondary dataset
 function removeData(chart) {
-    console.log(chart.data.datasets[0].data);
     while(chart.data.labels.length > 0)
         chart.data.labels.pop();
     while( chart.data.datasets[1].data.length > 0)
         chart.data.datasets[1].data.pop();
     chart.update();
-    console.log(chart.data.datasets[1].data);
 }
 
 /******************************* This is RESTful JS *******************************/
@@ -166,19 +165,18 @@ function plotData(responseText) {
     let ctx = document.getElementById('predictionChart');
     
     //Dynamic height 
-    height = getHeight();
-    ctx.height = height;
+    ctx.height = 250;
 
-    budgetChart = new Chart(ctx, config);
+    predictionChart = new Chart(ctx, config);
 }
 
-function getHeight() {
+/*function getHeight() {
     var w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     if(w < 450)
         return 300
     else
         return 225
-}
+}*/
 /******************************* Webpage Setup *******************************/
 // setup load event
 window.addEventListener("load", setup, true);
