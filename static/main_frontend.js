@@ -89,7 +89,6 @@ function addAlert(type, text, firstItemID){
     var parent = document.getElementById("main");
     var firstItem = document.getElementById(firstItemID);
     var alert = document.createElement("div");
-    console.log(type);
     if(type == 0)
         alert.setAttribute("class", "alert danger");
     else if(type == 1)
