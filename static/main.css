@@ -570,7 +570,7 @@ input[type=submit], input[type=button] , #toggle{
 }
 
 .table-title {
-    top: -2em;
+    top: -2.2em;
     left: 5%;
     position: absolute;
 }
@@ -801,6 +801,7 @@ input[type=submit], input[type=button] , #toggle{
                                    Financial Tools 
 *********************************************************************************************/
 
+
 /* Chart Container */
 #graph-container {
     border: rgb(53, 53, 53) solid 2px;
@@ -822,27 +823,72 @@ input[type=submit], input[type=button] , #toggle{
         color: white;
     }
 
+    #budget-container input[type=text], input[type=password], input[type=number] {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
     #budget-container .col1 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
     #budget-container .col2 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
     #budget-container .col3 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
 #budgetInformation
 {
     min-height: 9.5em;
+}
+
+#budget-table-container {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    max-height: 400vh;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.graph-title {
+    margin-top: 20px;
+    top: -0.3em;
+    left: 5%;
+    position: relative;
+}
+
+#budget-graph-container {
+    border: rgb(53, 53, 53) solid 2px;
+    position: relative;
+    padding: 2px;
+    height: 57vw;
+    width: 90vw;
+}
+
+#firstItem {
+    margin-top: 2em;
 }
 
 /* Prediction */
@@ -871,4 +917,18 @@ input[type=submit], input[type=button] , #toggle{
     float: right;
     margin: 1vw 5vw 0 0;
   }
+
+
+#budget-container input[type="checkbox"] {
+    display: inline-block;
+    width: 15px;
+    vertical-align: top;
+}
+
+#budget-container label {
+  padding-top: 0px;
+  display: inline-block;
+  width: 200px;
+  word-break: break-all;
+}
 

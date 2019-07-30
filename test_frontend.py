@@ -153,31 +153,41 @@ class UserBudget(Resource):
             #budgetList will include the information of the user budget. Amount, date, and category. The last object is the user's account at that moment.
             budgetList.append(budget.total_budget)
             budgetList.append(budget.income)
-            budgetList.append(budget.rent)
-            budgetList.append(budget.education)
-            budgetList.append(budget.groceries)
-            budgetList.append(budget.home_improvement)
-            budgetList.append(budget.entertainment)
-            budgetList.append(budget.savings)
             budgetList.append(budget.utilities)
+            budgetList.append(budget.rent)
             budgetList.append(budget.auto_gas)
+            budgetList.append(budget.education)
             budgetList.append(budget.healthcare)
+            budgetList.append(budget.groceries)
             budgetList.append(budget.restaurants)
+            budgetList.append(budget.home_improvement)
             budgetList.append(budget.shopping)
+            budgetList.append(budget.entertainment)
             budgetList.append(budget.travel)
+            budgetList.append(budget.savings)
             budgetList.append(budget.other)
             return budgetList
         else:
             return None
 
     def put(self):
-        '''args = parser.parse_args()
-        total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other = 0
-        categories = [total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other]
-        arguments = ['Total Budget', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other']
+        args = parser.parse_args()
 
-        for c in categories:
-            if(args['Total Budget'] != ""):
+        total_budget = args['Total Budget']
+        income = args['Income']
+        rent = args['Rent']
+        education = args['Education']
+        groceries = args['Groceries']
+        home_improvement = args['Home Improvement']
+        entertainment = args['Entertainment']
+        savings = args['Savings']
+        utilities = args['Utilities']
+        auto_gas = args['Auto']
+        healthcare = args['Healthcare']
+        restaurants = args['Restaurants']
+        shopping = args['Shopping']
+        travel = args['Travel']
+        other = args['Other']
 
 
         # Get the user
@@ -202,6 +212,7 @@ class UserBudget(Resource):
             account.budget = b
 
         else:
+
             record.total_budget = total_budget
             record.income = income
             record.rent = rent
@@ -220,7 +231,7 @@ class UserBudget(Resource):
 
         db.session.commit()
 
-        return b.id, 201'''
+        return b.id, 201
 
 # Prediction Resource
 # Creates prediction data to be sent to javascript
@@ -446,7 +457,15 @@ def trackerRedirect():
 @app.route("/budgeting/", methods=["GET"])
 def budgetRedirect():
     if "username" in session:
-        return render_template("budgetTool.html")
+        username = session["username"]
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == username:
+                user = u
+
+        account = user.account
+        budget = account.budget
+        return render_template("budgetTool.html", budget=budget)
     else:
         return redirect(url_for("home"))
 

@@ -161,7 +161,7 @@ function repopulate(responseText) {
 function badPost(){
     var transactionInput = document.getElementById("transactionAmount");
     transactionInput.value = "";
-    addAlert(0, "Invalid Transaction Value. Please try again.");
+    addAlert(0, "Invalid Transaction Value. Please try again.", "finacialTools");
 }
 
 /******************************* Webpage Setup *******************************/
