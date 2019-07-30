@@ -32,12 +32,17 @@
 
       <!--Content-->
       <div id="page-wrapper">
-        
         <!--Header-->
         <section id="reg-header">
                 <h1>Cashify Registration</h1>
         </section>
-
+        {% if alert1 %}
+        <div class="alert danger" style="margin-bottom: 0">Username or Email is already used by another account.</div>
+        {% elif alert2 %}
+        <div class="alert danger" style="margin-bottom: 0">Passwords do not match.</div>
+        {% else %}
+        <div class="alert danger" style="opacity: none; display: none">Invalid Username or Password.</div>
+        {% endif %}
         <div id="reg-container" class="wrapper style1">
             <div id="reg-content" class="wrapper style2">
                 <h2 class="font1">Registration</h2>
