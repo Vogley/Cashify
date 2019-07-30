@@ -34,20 +34,7 @@
     <div id="budgetInformation">
         <h2 class="font2">Edit Budget</h2>
         <form>
-            <div class="row">
-                <div class="col1">
-                    <label id="labelAmount" for="budgetAmount">Total Monthly Budget Amount</label>
-                </div>
-                <div class="col2">
-                    <span id="static">$</span><input type="text" id="budgetAmount" name="budgetAmount" placeholder="0.00">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col1">
-                    <input type="checkbox" id="budgetByCategory" name="budgetByCategory" onchange="showBudgetCategories()"><label for="category">Budget by Category<br><br></label>
-                </div>
-            </div>
-            <div id="budgetByCategoryForm" hidden>
+            <div id="budgetByCategoryForm">
                 <div class="row">
                     <div class="col1">
                     Income <input type="text" id="incomeBudget" name="incomeBudget" placeholder="0.00">
@@ -85,8 +72,8 @@
 
 {% block main %}
 
-<div id="transactionHistory">
-    <div id="table-title">
+<div class="chart-container">
+    <div class="table-title">
         <h2 class="font3">Your Monthly Budget</h2>
     </div>
     <div id="table-container" class="container">
@@ -121,7 +108,7 @@
 </div>
 
 
-<div id="table-title">
+<div class="table-title">
     <h2 class="font3"></h2>
 </div>
 {% endblock %}
@@ -139,7 +126,7 @@
         let budgetChart = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restraunts', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+                labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restaurants', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
                 datasets: [{
                     label: 'Overall Spending',
                     data: [4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],

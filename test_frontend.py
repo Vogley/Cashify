@@ -12,9 +12,8 @@ app = Flask(__name__)
 api = Api(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
-    app.root_path, "cashify.db"
-)
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/cashify_dev";
+
 # Suppress deprecation warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -171,13 +170,23 @@ class UserBudget(Resource):
             return None
 
     def put(self):
-        '''args = parser.parse_args()
-        total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other = 0
-        categories = [total_budget, income, rent, education, groceries, home_improvement, entertainment, savings, utilities, auto_gas, healthcare, restaurants, shopping, travel, other]
-        arguments = ['Total Budget', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other']
+        args = parser.parse_args()
 
-        for c in categories:
-            if(args['Total Budget'] != ""):
+        total_budget = args['Total Budget']
+        income = args['Income']
+        rent = args['Rent']
+        education = args['Education']
+        groceries = args['Groceries']
+        home_improvement = args['Home Improvement']
+        entertainment = args['Entertainment']
+        savings = args['Savings']
+        utilities = args['Utilities']
+        auto_gas = args['Auto']
+        healthcare = args['Healthcare']
+        restaurants = args['Restaurants']
+        shopping = args['Shopping']
+        travel = args['Travel']
+        other = args['Other']
 
 
         # Get the user
@@ -202,6 +211,7 @@ class UserBudget(Resource):
             account.budget = b
 
         else:
+
             record.total_budget = total_budget
             record.income = income
             record.rent = rent
@@ -220,7 +230,7 @@ class UserBudget(Resource):
 
         db.session.commit()
 
-        return b.id, 201'''
+        return b.id, 201
 
 # Prediction Resource
 # Creates prediction data to be sent to javascript
