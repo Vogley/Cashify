@@ -50,16 +50,8 @@ var timeoutID;
 var timeout = 1000;
 
 function setup() {
-    if(home == true)
-    {
-        document.getElementById("transactionBtn").addEventListener("click", addTransaction, true);
-        poller();
-    }
     if (budget == true)
-    {
         document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
-        budgetPoller();
-    }
 }
 
 function makeReq(method, target, retCode, action, data) {
@@ -86,7 +78,6 @@ function makeHandler(httpRequest, retCode, action) {
 	function handler() {
 		if (httpRequest.readyState === XMLHttpRequest.DONE) {
 			if (httpRequest.status === retCode) {
-				console.log("recieved response text:  " + httpRequest.responseText);
 				action(httpRequest.responseText);
 			} else {
 				alert("There was a problem with the request.  you'll need to refresh the page!");
@@ -97,8 +88,6 @@ function makeHandler(httpRequest, retCode, action) {
 }
 
 function addBudget() {
-
-
     var budgetPiechart;
 
     //get category values
@@ -128,11 +117,6 @@ function addBudget() {
     entertainmentBudget + "&Savings=" + savingsBudget + "&Utilities=" + utilitiesBudget +
     "&Auto=" + gasBudget + "&Healthcare=" + healthBudget + "&Restaurants=" + restaurantsBudget +
     "&Shopping=" + shoppingBudget + "&Travel=" + travelBudget + "&Other=" + otherBudget;
-    //Will add functionality to new category later
-
-
-    //    data = "Total Budget=" + budgetAmount + "&Income=0&Rent=0&Education=0&Groceries=0&Home Improvement=0&Entertainment=0" +
-      //      "&Savings=0&Utilities=0&Auto=0&Healthcare=0&Restaurants=0&Shopping=0&Travel=0&Other=0";
 
     window.clearTimeout(timeoutID);
     makeReq("PUT", "/budget", 201, budgetPoller, data);
@@ -145,20 +129,14 @@ function budgetPoller() {
 function populateBudget(responseText) {
     if (budget == true)
     {
-        console.log("repopulating!");
+        document.getElementById("firstItem").style.display = "block";
+        addAlert(2, "Budget Successfully Created.", "firstItem")
         var budgetString = JSON.parse(responseText);
-        console.log(budgetString);
 
         tbody = document.getElementById("tbody");
 
         //Header Row
         budgetRow = document.getElementById("budgetRow");
-
-        //addCells("th", newRow, "Date", "Amount", "Category", "Balance");
-        //thead.appendChild(newRow);
-
-      //  removeData(budgetPiechart);
-      //  addData(budgetPiechart, tbody, budgetRow);
 
         // remove current budget
         while (budgetRow.firstChild) {
@@ -208,13 +186,10 @@ function populateBudget(responseText) {
                     if(tmp.indexOf('.') != -1 && tmp.length == tmp.indexOf('.') + 2)
                         tmp = tmp + "0";
 
-
-
                     e.innerHTML = "$" + tmp;
 
                     budgetRow.appendChild(e);
                 }
-
             }
         }
         else {
@@ -223,7 +198,6 @@ function populateBudget(responseText) {
             createBudgetText.setAttribute("colspan", "15");
             budgetRow.appendChild(createBudgetText);
         }
-
     }
 }
 

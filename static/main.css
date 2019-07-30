@@ -617,7 +617,7 @@ input[type=submit], input[type=button] , button{
 }
 
 .table-title {
-    top: -2em;
+    top: -2.2em;
     left: 5%;
     position: absolute;
 }
@@ -779,6 +779,7 @@ input[type=submit], input[type=button] , button{
 .alert.info {background-color: #2196F3;}
 .alert.warning {background-color: #ff9800;}
 
+/* budget */
 #budget-container {
     columns: 1 370px;
     column-gap: 7em;
@@ -825,6 +826,36 @@ input[type=submit], input[type=button] , button{
 #budgetInformation
 {
     min-height: 9.5em;
+}
+
+#budget-table-container {
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    max-height: 400vh;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+.graph-title {
+    margin-top: 20px;
+    top: -0.3em;
+    left: 5%;
+    position: relative;
+}
+
+#budget-graph-container {
+    border: rgb(53, 53, 53) solid 2px;
+    position: relative;
+    padding: 2px;
+    height: 57vw;
+    width: 90vw;
+}
+
+#firstItem {
+    margin-top: 2em;
 }
 
 

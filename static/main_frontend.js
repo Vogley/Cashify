@@ -69,24 +69,20 @@ function sleep(ms) {
 }
 
 //Alert Button Setup. Type = 0 for danger, 1 for warning, 2 for info, 3 for success
-function addAlert(type, text){
+function addAlert(type, text, firstItemID){
     var parent = document.getElementById("main");
-    var firstItem = document.getElementById("finacialTools");
+    var firstItem = document.getElementById(firstItemID);
     var alert = document.createElement("div");
-    switch(type) {
-        case 0:
-            alert.setAttribute("class", "alert danger");
-        case 1:
-            alert.setAttribute("class", "alert warning");
-        case 2:
-            alert.setAttribute("class", "alert info");
-        case 3:
-            alert.setAttribute("class", "alert success");
-        default:
-            alert.setAttribute("class", "alert danger");
-    }
+    console.log(type);
+    if(type == 0)
+        alert.setAttribute("class", "alert danger");
+    else if(type == 1)
+        alert.setAttribute("class", "alert warning");
+    else if(type == 2)
+        alert.setAttribute("class", "alert info");
+    else
+        alert.setAttribute("class", "alert success");
     alert.innerHTML += text;
-
     //Fade out
     setTimeout(function(){ 
         alert.style.opacity = "0";

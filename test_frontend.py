@@ -12,8 +12,9 @@ app = Flask(__name__)
 api = Api(app)
 
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:postgres@localhost:5432/cashify_dev";
-
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + os.path.join(
+    app.root_path, "cashify.db"
+)
 # Suppress deprecation warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
@@ -152,18 +153,18 @@ class UserBudget(Resource):
             #budgetList will include the information of the user budget. Amount, date, and category. The last object is the user's account at that moment.
             budgetList.append(budget.total_budget)
             budgetList.append(budget.income)
-            budgetList.append(budget.rent)
-            budgetList.append(budget.education)
-            budgetList.append(budget.groceries)
-            budgetList.append(budget.home_improvement)
-            budgetList.append(budget.entertainment)
-            budgetList.append(budget.savings)
             budgetList.append(budget.utilities)
+            budgetList.append(budget.rent)
             budgetList.append(budget.auto_gas)
+            budgetList.append(budget.education)
             budgetList.append(budget.healthcare)
+            budgetList.append(budget.groceries)
             budgetList.append(budget.restaurants)
+            budgetList.append(budget.home_improvement)
             budgetList.append(budget.shopping)
+            budgetList.append(budget.entertainment)
             budgetList.append(budget.travel)
+            budgetList.append(budget.savings)
             budgetList.append(budget.other)
             return budgetList
         else:
@@ -456,7 +457,15 @@ def trackerRedirect():
 @app.route("/budgeting/", methods=["GET"])
 def budgetRedirect():
     if "username" in session:
-        return render_template("budgetTool.html")
+        username = session["username"]
+        user = User.query.get(1)
+        for u in User.query.all():
+            if u.username == username:
+                user = u
+
+        account = user.account
+        budget = account.budget
+        return render_template("budgetTool.html", budget=budget)
     else:
         return redirect(url_for("home"))
 
