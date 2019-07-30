@@ -6,7 +6,6 @@
 <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" id="homeLink" onClick="scrollToTop()">Home</a>
     <a href="javascript:void(0)" id="loginLink" onClick="scrollToLogin()">Login</a>
-    <a href="#">Cashify Tools</a>
     <a href="#">About</a>
 </div>
 {% endblock %}
@@ -29,6 +28,13 @@
 
 
 {% block main %}
+{% if alert %}
+<div class="alert danger">Invalid Username or Password.</div>
+{% elif success %}
+<div class="alert info">New account created! Welcome to Cashify!</div>
+{% else %}
+<div class="alert danger" style="opacity: none; display: none">Invalid Username or Password.</div>
+{% endif %}
 <!--Home Page Form-->
 <div id="form-container" class="container">
     <!--Sign In-->

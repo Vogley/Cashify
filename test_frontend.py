@@ -368,7 +368,7 @@ def home():
             else:
                 return render_template("homepage.html")
         else:
-            return render_template("homepage.html")
+            return render_template("homepage.html", alert=True)
     else:
         return render_template("homepage.html")
 
@@ -392,7 +392,7 @@ def regRedirect():
     if rUsername != "" and rPassword != "" and cPassword != "":
         return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
     else:
-        return redirect(url_for("home"))
+        return render_template("homepage.html", alert=True)
 
 # Registration of new user
 @app.route("/registrationCheck/", methods=["POST"])
@@ -412,7 +412,7 @@ def registration():
         '''TODO: I want to be able to return to the registration page with a notifcation about the username/email
         already being used.  How can I do this?'''
     elif rFirstName == "" or rLastName == "" or email == "" or amount == "" or rUsername == "" or rPassword == "" or cPassword == "":
-        return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword)
+        return render_template("registration.html", rusername=rUsername, rpassword=rPassword, cpassword=cPassword, alert1=True)
     else:
         if rPassword == cPassword:
             u1 = User(username=rUsername, password_hash=rPassword, email=email, first_name=rFirstName, last_name=rLastName)
@@ -427,9 +427,9 @@ def registration():
             print("Added user to database")
         else:
             # don't reload cPassword because the passwords did not match
-            return render_template("registration.html", rusername=rUsername, rpassword=rPassword, rfirstname=rFirstName, rlastname=rLastName, email=email, amount=amount)
+            return render_template("registration.html", rusername=rUsername, rpassword=rPassword, rfirstname=rFirstName, rlastname=rLastName, email=email, amount=amount, alert2=True)
             '''TODO: Add notification saying the passwords do not match'''
-    return render_template("homepage.html")
+    return render_template("homepage.html", success=True)
 
 @app.route("/delete_account/")
 def delate_account():
