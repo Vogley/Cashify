@@ -60,15 +60,9 @@ var timeoutID;
 var timeout = 1000;
 
 function setup() {
-    if(home == true)
-    {
-        document.getElementById("transactionBtn").addEventListener("click", addTransaction, true);
-        poller();
-    }
     if (budget == true)
     {
         document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
-        budgetPoller();
     }
 }
 
