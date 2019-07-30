@@ -409,7 +409,7 @@ ol, ul {
     columns: 2 400px;
     column-gap: 10em;
     column-rule: dashed 1px rgb(55, 167, 10);
-    margin-right: 8vw;
+    margin-right: 6vw;
 }
     #form-container input[type=submit] {
         background-color: #4CAF50;
@@ -823,7 +823,7 @@ input[type=submit], input[type=button] , #toggle{
         color: white;
     }
 
-    #budget-container input[type=text], input[type=password], input[type=number] {
+    #budget-container input[type=text], #budget-container input[type=password], #budget-container input[type=number] {
         box-sizing: border-box;
         width: 100%;
         padding: 12px;
