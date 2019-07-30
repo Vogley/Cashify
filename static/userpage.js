@@ -65,7 +65,8 @@ function poller() {
 }
 
 function deleteTransaction() {
-	makeReq("DELETE", "/transactions/" + lastTransactionID, 204, poller);
+    makeReq("DELETE", "/transactions/" + lastTransactionID, 204, poller);
+    addAlert(2, "Deleted Previous Transaction.");
 }
 
 // helper function for repop:

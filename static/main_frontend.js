@@ -19,6 +19,22 @@ function toggleNav() {
     nav = !nav;
 }
 
+/* Loop through all dropdown buttons to toggle between hiding and showing its dropdown content - This allows the user to have multiple dropdowns without any conflict */
+var dropdown = document.getElementsByClassName("dropdown-btn");
+var i;
+
+for (i = 0; i < dropdown.length; i++) {
+  dropdown[i].addEventListener("click", function() {
+  this.classList.toggle("active");
+  var dropdownContent = this.nextElementSibling;
+  if (dropdownContent.style.display === "block") {
+  dropdownContent.style.display = "none";
+  } else {
+  dropdownContent.style.display = "block";
+  }
+  });
+}
+
 //Scroll Functions
 async function scrollToTop(){
     // Scroll to a certain element
@@ -73,20 +89,16 @@ function addAlert(type, text){
     var parent = document.getElementById("main");
     var firstItem = document.getElementById("finacialTools");
     var alert = document.createElement("div");
-    switch(type) {
-        case 0:
-            alert.setAttribute("class", "alert danger");
-        case 1:
-            alert.setAttribute("class", "alert warning");
-        case 2:
-            alert.setAttribute("class", "alert info");
-        case 3:
-            alert.setAttribute("class", "alert success");
-        default:
-            alert.setAttribute("class", "alert danger");
-    }
+    console.log(type);
+    if(type == 0)
+        alert.setAttribute("class", "alert danger");
+    else if(type == 1)
+        alert.setAttribute("class", "alert warning");
+    else if(type == 2)
+        alert.setAttribute("class", "alert info");
+    else
+        alert.setAttribute("class", "alert success");
     alert.innerHTML += text;
-
     //Fade out
     setTimeout(function(){ 
         alert.style.opacity = "0";
