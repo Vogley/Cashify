@@ -44,24 +44,94 @@
             <div id="budgetByCategoryForm">
                 <div class="row">
                     <div class="col1">
-                    Income <input type="text" id="incomeBudget" name="incomeBudget" placeholder="0.00">
-                    Utilities <input type="text" id="utilitiesBudget" name="utilitiesBudget" placeholder="0.00">
-                    Rent <input type="text" id="rentBudget" name="rentBudget" placeholder="0.00">
-                    Auto + Gas <input type="text" id="gasBudget" name="gasBudget" placeholder="0.00">
-                    Education <input type="text" id="educationBudget" name="educationBudget" placeholder="0.00">
+                    {% if budget.income %}
+                        Income <input type="text" id="incomeBudget" name="incomeBudget" value={{ budget.income }}>
+                    {% else %}
+                        Income <input type="text" id="incomeBudget" name="incomeBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.utilities %}
+                        Utilities <input type="text" id="utilitiesBudget" name="utilitiesBudget" value={{ budget.utilities }}>
+                    {% else %}
+                        Utilities <input type="text" id="utilitiesBudget" name="utilitiesBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.rent %}
+                        Rent <input type="text" id="rentBudget" name="rentBudget" value={{ budget.rent }}>
+                    {% else %}
+                        Rent <input type="text" id="rentBudget" name="rentBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.auto %}
+                        Auto + Gas <input type="text" id="gasBudget" name="gasBudget" value={{ budget.auto_gas }}>
+                    {% else %}
+                        Auto + Gas <input type="text" id="gasBudget" name="gasBudget" placeholder="0.00">
+                    {% endif %}
+                    
+                    {% if budget.education %}
+                        Education <input type="text" id="educationBudget" name="educationBudget" value={{ budget.education }}>
+                    {% else %}    
+                        Education <input type="text" id="educationBudget" name="educationBudget" placeholder="0.00">
+                    {% endif %}
+
                     </div>
                     <div class="col2">
-                    Healthcare <input type="text" id="healthBudget" name="healthBudget" placeholder="0.00">
-                    Groceries <input type="text" id="groceriesBudget" name="groceriesBudget" placeholder="0.00">
-                    Restaurants <input type="text" id="restaurantsBudget" name="restaurantsBudget" placeholder="0.00">
-                    Home Improvement <input type="text" id="homeBudget" name="homeBudget" placeholder="0.00">
-                    Shopping <input type="text" id="shoppingBudget" name="shoppingBudget" placeholder="0.00">
+                    {% if budget.healthcare %}
+                        Healthcare <input type="text" id="healthBudget" name="healthBudget" value={{ budget.healthcare }}>
+                    {% else %}
+                        Healthcare <input type="text" id="healthBudget" name="healthBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.groceries %}
+                        Groceries <input type="text" id="groceriesBudget" name="groceriesBudget" value={{ budget.groceries }}>
+                    {% else %}
+                        Groceries <input type="text" id="groceriesBudget" name="groceriesBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.restaurant %}
+                        Restaurants <input type="text" id="restaurantsBudget" name="restaurantsBudget" value={{ budget.restaurant }}>
+                    {% else %}
+                        Restaurants <input type="text" id="restaurantsBudget" name="restaurantsBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.home %}
+                        Home Improvement <input type="text" id="homeBudget" name="homeBudget" value={{ budget.home_improvement }}>
+                    {% else %}
+                        Home Improvement <input type="text" id="homeBudget" name="homeBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.shopping %}
+                        Shopping <input type="text" id="shoppingBudget" name="shoppingBudget" value={{ budget.shopping }}>
+                    {% else %}
+                        Shopping <input type="text" id="shoppingBudget" name="shoppingBudget" placeholder="0.00">
+                    {% endif %}
+
                     </div>
                     <div class="col3">
-                    Entertainment <input type="text" id="entertainmentBudget" name="entertainmentBudget" placeholder="0.00">
-                    Travel <input type="text" id="travelBudget" name="travelBudget" placeholder="0.00">
-                    Savings <input type="text" id="savingsBudget" name="savingsBudget" placeholder="0.00">
-                    Other <input type="text" id="otherBudget" name="otherBudget" placeholder="0.00">
+                    {% if budget.entertainment %}
+                        Entertainment <input type="text" id="entertainmentBudget" name="entertainmentBudget" value={{ budget.entertainment }}>
+                    {% else %}
+                        Entertainment <input type="text" id="entertainmentBudget" name="entertainmentBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.travel %}
+                        Travel <input type="text" id="travelBudget" name="travelBudget" value={{ budget.travel }}>
+                    {% else %}
+                        Travel <input type="text" id="travelBudget" name="travelBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.savings %}
+                        Savings <input type="text" id="savingsBudget" name="savingsBudget" value={{ budget.savings }}>
+                    {% else %}
+                        Savings <input type="text" id="savingsBudget" name="savingsBudget" placeholder="0.00">
+                    {% endif %}
+
+                    {% if budget.other %}
+                        Other <input type="text" id="otherBudget" name="otherBudget" value={{ budget.other }}>
+                    {% else %}
+                        Other <input type="text" id="otherBudget" name="otherBudget" placeholder="0.00">
+                    {% endif %}
+
                     </div>
                 </div>
             </div>
@@ -79,11 +149,11 @@
 
 {% block main %}
 
-<div class="chart-container">
+<div class="chart-container" id="firstItem" style="display: none">
     <div class="table-title">
-        <h2 class="font3">Your Monthly Budget</h2>
+        <h2 class="font3">New Budget</h2>
     </div>
-    <div id="table-container" class="container">
+    <div id="budget-table-container" class="container">
         <table id="transactionTable">
             <thead id="thead">
                 <tr class="style3">
@@ -114,9 +184,13 @@
     </div>
 </div>
 
-
-<div class="table-title">
-    <h2 class="font3"></h2>
+<div>
+    <div class="graph-title">
+        <h2 class="font3">Budget Graph</h2>
+    </div>
+    <div id="budget-graph-container" class="container">
+        <canvas id="budgetChart" width="400" height="400"></canvas>
+    </div>
 </div>
 {% endblock %}
 
@@ -124,8 +198,8 @@
 
 {% block js %}
 
-<div id="graph-container" class="container">
-    <canvas id="budgetChart" width="400" height="400"></canvas>
+
+    
     <script onchange='populateBudget()'>
         var home = false;
         var budget = true;
@@ -156,7 +230,7 @@
             }
         });
     </script>
-</div>
+
 
 <script src="{{ url_for('static', filename='budget.js') }}"></script>
 {% endblock %}

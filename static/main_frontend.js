@@ -85,9 +85,9 @@ function sleep(ms) {
 }
 
 //Alert Button Setup. Type = 0 for danger, 1 for warning, 2 for info, 3 for success
-function addAlert(type, text){
+function addAlert(type, text, firstItemID){
     var parent = document.getElementById("main");
-    var firstItem = document.getElementById("finacialTools");
+    var firstItem = document.getElementById(firstItemID);
     var alert = document.createElement("div");
     console.log(type);
     if(type == 0)
