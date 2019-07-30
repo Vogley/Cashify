@@ -789,22 +789,37 @@ input[type=submit], input[type=button] , button{
         color: white;
     }
 
+    #budget-container input[type=text], input[type=password], input[type=number] {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        resize: vertical;
+    }
+
     #budget-container .col1 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
     #budget-container .col2 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
     #budget-container .col3 {
         float: left;
         width: 30%;
         margin-top: 6px;
+        margin-left: 6px;
+        margin-right: 6px;
     }
 
 #budgetInformation
@@ -839,4 +854,18 @@ button{
     float: right;
     margin: 1vw 5vw 0 0;
   }
+
+
+#budget-container input[type="checkbox"] {
+    display: inline-block;
+    width: 15px;
+    vertical-align: top;
+}
+
+#budget-container label {
+  padding-top: 0px;
+  display: inline-block;
+  width: 200px;
+  word-break: break-all;
+}
 

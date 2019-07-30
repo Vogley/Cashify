@@ -38,16 +38,6 @@ async function scrollToLogin(){
     toggleNav();
 }
 
-function showBudgetCategories() {
-    var isChecked = document.getElementById("budgetByCategory").checked;
-    if (isChecked) {
-        document.getElementById("budgetByCategoryForm").hidden = false;
-    }
-    else {
-        document.getElementById("budgetByCategoryForm").hidden = true;
-    }
-}
-
 //Sleep Function
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -107,38 +97,43 @@ function makeHandler(httpRequest, retCode, action) {
 }
 
 function addBudget() {
-    var budgetAmount = document.getElementById("budgetAmount").value;
-    var budgetByCategory = document.getElementById("budgetByCategory").checked;
+
+
     var budgetPiechart;
 
     //get category values
-    var incomeBudget = document.getElementById("incomeBudget").value;
-    var utilitiesBudget = document.getElementById("utilitiesBudget").value;
-    var rentBudget = document.getElementById("rentBudget").value;
-    var gasBudget = document.getElementById("gasBudget").value;
-    var educationBudget = document.getElementById("educationBudget").value;
-    var healthBudget = document.getElementById("healthBudget").value;
-    var groceriesBudget = document.getElementById("groceriesBudget").value;
-    var restaurantsBudget = document.getElementById("restaurantsBudget").value;
-    var homeBudget = document.getElementById("homeBudget").value;
-    var shoppingBudget = document.getElementById("shoppingBudget").value;
-    var entertainmentBudget = document.getElementById("entertainmentBudget").value;
-    var travelBudget = document.getElementById("travelBudget").value;
-    var savingsBudget = document.getElementById("savingsBudget").value;
-    var otherBudget = document.getElementById("otherBudget").value;
-    if(budgetByCategory) {
+    var incomeBudget = document.getElementById("incomeBudget").value != "" ? document.getElementById("incomeBudget").value : 0;
+    var utilitiesBudget = document.getElementById("utilitiesBudget").value != "" ? document.getElementById("utilitiesBudget").value : 0;
+    var rentBudget = document.getElementById("rentBudget").value != "" ? document.getElementById("rentBudget").value : 0;
+    var gasBudget = document.getElementById("gasBudget").value != "" ? document.getElementById("gasBudget").value : 0;
+    var educationBudget = document.getElementById("educationBudget").value != "" ? document.getElementById("educationBudget").value : 0;
+    var healthBudget = document.getElementById("healthBudget").value != "" ? document.getElementById("healthBudget").value : 0;
+    var groceriesBudget = document.getElementById("groceriesBudget").value != "" ? document.getElementById("groceriesBudget").value : 0;
+    var restaurantsBudget = document.getElementById("restaurantsBudget").value != "" ? document.getElementById("restaurantsBudget").value : 0;
+    var homeBudget = document.getElementById("homeBudget").value != "" ? document.getElementById("homeBudget").value : 0;
+    var shoppingBudget = document.getElementById("shoppingBudget").value != "" ? document.getElementById("shoppingBudget").value : 0;
+    var entertainmentBudget = document.getElementById("entertainmentBudget").value != "" ? document.getElementById("entertainmentBudget").value : 0;
+    var travelBudget = document.getElementById("travelBudget").value != "" ? document.getElementById("travelBudget").value : 0;
+    var savingsBudget = document.getElementById("savingsBudget").value != "" ? document.getElementById("savingsBudget").value : 0;
+    var otherBudget = document.getElementById("otherBudget").value != "" ? document.getElementById("otherBudget").value : 0;
 
-        data = "Total Budget=" + budgetAmount + "&Income=" + incomeBudget +
-        "&Rent=" + rentBudget + "&Education=" + educationBudget + "&Groceries=" +
-        groceriesBudget + "&Home Improvement=" + homeBudget + "&Entertainment=" +
-        entertainmentBudget + "&Savings=" + savingsBudget + "&Utilities=" + utilitiesBudget +
-        "&Auto=" + gasBudget + "&Healthcare=" + healthBudget + "&Restaurants=" + restaurantsBudget +
-        "&Shopping=" + shoppingBudget + "&Travel=" + travelBudget + "&Other=" + otherBudget;
-        //Will add functionality to new category later
-    }
-    else {
-        data = "Total Budget=" + budgetAmount;
-    }
+    var totalBudget = parseFloat(incomeBudget) + parseFloat(utilitiesBudget) + parseFloat(rentBudget) + parseFloat(gasBudget) + parseFloat(educationBudget) +
+        parseFloat(healthBudget) + parseFloat(groceriesBudget) + parseFloat(restaurantsBudget) +
+        parseFloat(homeBudget) + parseFloat(shoppingBudget) + parseFloat(entertainmentBudget) + parseFloat(travelBudget) + parseFloat(savingsBudget) +
+        parseFloat(otherBudget);
+
+    data = "Total Budget=" + totalBudget + "&Income=" + incomeBudget +
+    "&Rent=" + rentBudget + "&Education=" + educationBudget + "&Groceries=" +
+    groceriesBudget + "&Home Improvement=" + homeBudget + "&Entertainment=" +
+    entertainmentBudget + "&Savings=" + savingsBudget + "&Utilities=" + utilitiesBudget +
+    "&Auto=" + gasBudget + "&Healthcare=" + healthBudget + "&Restaurants=" + restaurantsBudget +
+    "&Shopping=" + shoppingBudget + "&Travel=" + travelBudget + "&Other=" + otherBudget;
+    //Will add functionality to new category later
+
+
+    //    data = "Total Budget=" + budgetAmount + "&Income=0&Rent=0&Education=0&Groceries=0&Home Improvement=0&Entertainment=0" +
+      //      "&Savings=0&Utilities=0&Auto=0&Healthcare=0&Restaurants=0&Shopping=0&Travel=0&Other=0";
+
     window.clearTimeout(timeoutID);
     makeReq("PUT", "/budget", 201, budgetPoller, data);
 }
@@ -162,8 +157,8 @@ function populateBudget(responseText) {
         //addCells("th", newRow, "Date", "Amount", "Category", "Balance");
         //thead.appendChild(newRow);
 
-        removeData(budgetPiechart);
-        addData(budgetPiechart, tbody, budgetRow);
+      //  removeData(budgetPiechart);
+      //  addData(budgetPiechart, tbody, budgetRow);
 
         // remove current budget
         while (budgetRow.firstChild) {
@@ -198,8 +193,11 @@ function populateBudget(responseText) {
                 for (var i = 0; i < categoryHeaders.length; i++) {
                     categoryHeaders[i].hidden = false;
                 }
+
+                var total = 0;
                 for (var i = 0; i < budgetString.length; i++) {
                     var e = document.createElement("td");
+
 
                     var tmp = String(budgetString[i]);
 
@@ -210,10 +208,13 @@ function populateBudget(responseText) {
                     if(tmp.indexOf('.') != -1 && tmp.length == tmp.indexOf('.') + 2)
                         tmp = tmp + "0";
 
+
+
                     e.innerHTML = "$" + tmp;
 
                     budgetRow.appendChild(e);
                 }
+
             }
         }
         else {
