@@ -441,7 +441,9 @@ def delate_account():
                     db.session.delete(transaction)
                 db.session.delete(u.account)
                 db.session.delete(u)
-                return redirect(url_for("home"))
+                db.session.commit()
+
+                return redirect(url_for("unlogger"))
     else:
         return redirect(url_for("home"))
 

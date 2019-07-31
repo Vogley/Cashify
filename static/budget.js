@@ -50,8 +50,8 @@ var timeoutID;
 var timeout = 1000;
 
 function setup() {
-    if (budget == true)
-        document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
+    document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
+    makeReq("GET", "/budget", 200, plotData);
 }
 
 function makeReq(method, target, retCode, action, data) {
@@ -88,7 +88,6 @@ function makeHandler(httpRequest, retCode, action) {
 }
 
 function addBudget() {
-    var budgetPiechart;
 
     //get category values
     var incomeBudget = document.getElementById("incomeBudget").value != "" ? document.getElementById("incomeBudget").value : 0;
@@ -127,8 +126,6 @@ function budgetPoller() {
 }
 
 function populateBudget(responseText) {
-    if (budget == true)
-    {
         document.getElementById("firstItem").style.display = "block";
         addAlert(2, "Budget Successfully Created.", "firstItem")
         var budgetString = JSON.parse(responseText);
@@ -198,7 +195,7 @@ function populateBudget(responseText) {
             createBudgetText.setAttribute("colspan", "15");
             budgetRow.appendChild(createBudgetText);
         }
-    }
+    plotData(budgetString);
 }
 
 // helper function for repop:
@@ -255,6 +252,58 @@ function addData(chart, body, headers){
         chart.data.datasets[0].data.push(rows);
     }
 }
+
+
+function plotData(responseText) {
+    var budgetArray = JSON.parse(responseText);
+    budgetArray[0] = 0;
+
+    //Plot Data on chart using chart.js
+    var config = {
+        type: 'pie',
+        data: {
+            labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restaurants', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+            datasets: [{
+            label: 'Overall Spending',
+            data: budgetArray,
+            backgroundColor: [
+                'rgba(28, 200, 14, 0.3)',
+                'rgba(70, 14, 200, 0.3)',
+                'rgba(200, 142, 14, 0.3)',
+                'rgba(238, 243, 252, 0.3)',
+                'rgba(1, 4, 5, 0.3)',
+                'rgba(224, 104, 6, 0.3)',
+                'rgba(227, 238, 228, 0.3)',
+                'rgba(60, 83, 82, 0.3)',
+                'rgba(42, 116, 81, 0.3)',
+                'rgba(46, 68, 116, 0.3)',
+                'rgba(236, 235, 234, 0.3)',
+                'rgba(61, 219, 86, 0.3)',
+                'rgba(0, 0, 0, 0.3)'
+            ]
+            }] 
+        },
+        options: {
+            legend: {
+                display: false,
+            }
+        }
+
+    };
+    
+    let ctx = document.getElementById('budgetChart');
+    ctx.height = 250;
+
+
+    budgetChart = new Chart(ctx, config);
+}
+
+
+
+
+
+
+
 
 // setup load event
 window.addEventListener("load", setup, true);
