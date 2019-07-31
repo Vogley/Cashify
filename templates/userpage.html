@@ -14,8 +14,7 @@
         <a href="{{ url_for('budgetRedirect') }}">Budget</a>
         <a href="{{ url_for('predictionRedirect') }}">Prediction</a>
       </div>
-    <a href="#">Your Account</a>
-    <a href="#">About</a>
+    <a href="{{ url_for('delete_account') }}">Delete Account</a>
 </div>
 {% endblock %}
 
@@ -40,18 +39,11 @@
 <!--New Transaction-->
 <div id="transaction-container" class="container">
     <div id="transactionInformation">
-        This is the information about entering transactions. blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
+        Please enter transactions here. Be sure to include the exact amount you spent and 
+        choose a category to file the transaction under.  View your previous transactions
+        below or by viewing the tracker.  You can view and update your budget through the
+        budget tool and our prediction algorithm will provide you with insight on what you
+        will spend in the future based on your previous transactions.
     </div>
     <br/><br/><br/>
     <h2 class="font2">Transaction Submission</h2>

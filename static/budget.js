@@ -262,24 +262,24 @@ function plotData(responseText) {
     var config = {
         type: 'pie',
         data: {
-            labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restaurants', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+            labels: ['Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other'],
             datasets: [{
             label: 'Overall Spending',
             data: budgetArray,
             backgroundColor: [
-                'rgba(28, 200, 14, 0.3)',
-                'rgba(70, 14, 200, 0.3)',
-                'rgba(200, 142, 14, 0.3)',
-                'rgba(238, 243, 252, 0.3)',
-                'rgba(1, 4, 5, 0.3)',
-                'rgba(224, 104, 6, 0.3)',
-                'rgba(227, 238, 228, 0.3)',
-                'rgba(60, 83, 82, 0.3)',
-                'rgba(42, 116, 81, 0.3)',
-                'rgba(46, 68, 116, 0.3)',
-                'rgba(236, 235, 234, 0.3)',
-                'rgba(61, 219, 86, 0.3)',
-                'rgba(0, 0, 0, 0.3)'
+                'rgba(106, 119, 120, 0.3)',
+                'rgba(47, 156, 224, 0.3)',
+                'rgba(299, 249, 224, 0.3)',
+                'rgba(17, 75, 95, 0.3)',
+                'rgba(73, 86, 91, 0.3)',
+                'rgba(26, 147, 111, 0.3)',
+                'rgba(243, 233, 210, 0.3)',
+                'rgba(2, 128, 144, 0.3)',
+                'rgba(47, 55, 58, 0.3)',
+                'rgba(136, 212, 152, 0.3)',
+                'rgba(240, 243, 189, 0.3)',
+                'rgba(94, 174, 184, 0.3)',
+                'rgba(74, 124, 89, 0.3)'
             ]
             }] 
         },

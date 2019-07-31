@@ -432,7 +432,7 @@ def registration():
     return render_template("homepage.html", success=True)
 
 @app.route("/delete_account/")
-def delate_account():
+def delete_account():
     if "username" in session:
         user = User.query.get(1)
         for u in User.query.all():
