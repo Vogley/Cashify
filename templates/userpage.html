@@ -14,8 +14,7 @@
         <a href="{{ url_for('budgetRedirect') }}">Budget</a>
         <a href="{{ url_for('predictionRedirect') }}">Prediction</a>
       </div>
-    <a href="#">Your Account</a>
-    <a href="#">About</a>
+    <a href="{{ url_for('delete_account') }}">Delete Account</a>
 </div>
 {% endblock %}
 
@@ -39,21 +38,15 @@
 
 <!--New Transaction-->
 <div id="transaction-container" class="container">
+    <center><h1>Please enter transactions here</h1></center>
+    <hr>
     <div id="transactionInformation">
-        This is the information about entering transactions. blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
-        blah blah blah blah blah blah blah blah blah blah
+        <center>Be sure to include the exact amount you spent and choose a category.</center>
+        <center>View your previous transactions below or by viewing the tracker.</center>
+        <center>You can view and update your budget through the budget tool.</center>
+        <center>Our prediction algorithm will provide you with insight on what you will spend in the future based on your previous transactions.</center>
     </div>
-    <br/><br/><br/>
+    <hr>
     <h2 class="font2">Transaction Submission</h2>
     <form>
         <div class="row">
@@ -98,6 +91,7 @@
 {% endblock %}
 
 {% block main %}
+<h2 class="font3" id="finacialToolsTitle">Financial Tools</h2>
 <div id="finacialTools" class="style3">
     <div class="imageR">
             <div class="imageC" style="padding-left: 1vw">

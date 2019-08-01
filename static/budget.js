@@ -1,6 +1,7 @@
 
 /******************************* Webpage Functions *******************************/
 var nav = false;
+var loaded = false;
 
 //Navigation Bar
 function toggleNav() {
@@ -50,8 +51,8 @@ var timeoutID;
 var timeout = 1000;
 
 function setup() {
-    if (budget == true)
-        document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
+    document.getElementById("budgetBtn").addEventListener("click", addBudget, true);
+    makeReq("GET", "/budget", 200, plotData);
 }
 
 function makeReq(method, target, retCode, action, data) {
@@ -88,7 +89,6 @@ function makeHandler(httpRequest, retCode, action) {
 }
 
 function addBudget() {
-    var budgetPiechart;
 
     //get category values
     var incomeBudget = document.getElementById("incomeBudget").value != "" ? document.getElementById("incomeBudget").value : 0;
@@ -127,8 +127,6 @@ function budgetPoller() {
 }
 
 function populateBudget(responseText) {
-    if (budget == true)
-    {
         document.getElementById("firstItem").style.display = "block";
         addAlert(2, "Budget Successfully Created.", "firstItem")
         var budgetString = JSON.parse(responseText);
@@ -198,7 +196,8 @@ function populateBudget(responseText) {
             createBudgetText.setAttribute("colspan", "15");
             budgetRow.appendChild(createBudgetText);
         }
-    }
+    removeData(budgetChart);
+    plotData(budgetString);
 }
 
 // helper function for repop:
@@ -238,24 +237,52 @@ function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
 
 //helper functions for budget pie chart
 function removeData(chart){
-    console.log(chart.data.datasets[0].data);
-    while(chart.data.labels.length > 0)
-        chart.data.labels.pop();
-    while(chart.data.datasets[0].data.length > 0)
-        chart.data.datasets[0].data.pop();
-    chart.update();
-    console.log(chart.data.datasets[0].data);
+        chart.data.datasets.pop();
 }
 
-function addData(chart, body, headers){
-    while(body.length > 0){
-        var category = body.shift();
-        chart.data.labels.push(category);
-        var rows = headers.shift();
-        chart.data.datasets[0].data.push(rows);
-    }
+
+function plotData(responseText) {
+    if(!loaded)
+        var budgetArray = JSON.parse(responseText);
+    else 
+        var budgetArray = responseText;
+    var data = [];
+
+    for(i = 1; i < budgetArray.length; i++)
+        data.push(budgetArray[i]);
+
+
+    var colors = ["rgba(249, 83, 8, 0.5)", "rgba(249, 204, 8, 0.5)", "rgba(174, 249, 8, 0.5)", "rgba(54, 249, 8, 0.5)", 
+                "rgba(54, 249, 8, 0.5)", "rgba(8, 249, 83, 0.5)", "rgba(8, 249, 203, 0.5)", "rgba(8, 174, 249, 0.5)", 
+                "rgba(8, 54, 249, 0.5)", "rgba(83, 8, 249, 0.5)", "rgba(172, 8, 249, 0.5)", 
+                "rgba(203, 8, 249, 0.5)", "rgba(249, 8, 174, 0.5)", "rgba(249, 8, 54, 0.5)"];
+    //Plot Data on chart using chart.js
+    var config = {
+        type: 'pie',
+        data: {
+            labels: ['Income', 'Utilities', 'Rent', 'Auto + Gas', 'Education', 'Healthcare', 'Groceries', 'Restauramts', 'Home Improvement', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+            datasets: [{
+            label: 'Overall Spending',
+            data: data,
+            backgroundColor: colors
+            }] 
+        },
+        options: {
+            legend: {
+                display: false,
+            }
+        }
+
+    };
+    
+    let ctx = document.getElementById('budgetChart');
+    if(!loaded)
+        ctx.height = 250;
+
+
+    budgetChart = new Chart(ctx, config);
+    loaded = true;
 }
 
 // setup load event
 window.addEventListener("load", setup, true);
-
