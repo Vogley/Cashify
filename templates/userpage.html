@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block titleBar %}
-<a href="{{ url_for("unlogger") }}" id="logoutBtn"></a>
+<a href="{{ url_for('unlogger') }}" id="logoutBtn"></a>
 {% endblock %}
 
 
@@ -39,12 +39,16 @@
 <!--New Transaction-->
 <div id="transaction-container" class="container">
     <div id="transactionInformation">
-        Please enter transactions here. Be sure to include the exact amount you spent and 
+        <p text-align="center"><b>Welcome to Cashify!</b></p>
+        <p><br>Our services will allow you to make banking a breeze! <i>Cashify
+        aims to allow users to have full control over organizing their finances.</i>  With 
+        Cashify, you can plan your budget, track your spendings, and see your predicted 
+        spendings in the future.</p>
+        <p><br><b>Please enter transactions here!<b> Be sure to include the exact amount you spent and 
         choose a category to file the transaction under.  View your previous transactions
         below or by viewing the tracker.  You can view and update your budget through the
         budget tool and our prediction algorithm will provide you with insight on what you
-        will spend in the future based on your previous transactions.
-    </div>
+        will spend in the future based on your previous transactions.</p>
     <br/><br/><br/>
     <h2 class="font2">Transaction Submission</h2>
     <form>
