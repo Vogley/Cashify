@@ -1,6 +1,7 @@
 
 /******************************* Webpage Functions *******************************/
 var nav = false;
+var loaded = false;
 
 //Navigation Bar
 function toggleNav() {
@@ -195,6 +196,7 @@ function populateBudget(responseText) {
             createBudgetText.setAttribute("colspan", "15");
             budgetRow.appendChild(createBudgetText);
         }
+    removeData(budgetChart);
     plotData(budgetString);
 }
 
@@ -235,52 +237,34 @@ function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
 
 //helper functions for budget pie chart
 function removeData(chart){
-    console.log(chart.data.datasets[0].data);
-    while(chart.data.labels.length > 0)
-        chart.data.labels.pop();
-    while(chart.data.datasets[0].data.length > 0)
-        chart.data.datasets[0].data.pop();
-    chart.update();
-    console.log(chart.data.datasets[0].data);
-}
-
-function addData(chart, body, headers){
-    while(body.length > 0){
-        var category = body.shift();
-        chart.data.labels.push(category);
-        var rows = headers.shift();
-        chart.data.datasets[0].data.push(rows);
-    }
+        chart.data.datasets.pop();
 }
 
 
 function plotData(responseText) {
-    var budgetArray = JSON.parse(responseText);
-    budgetArray[0] = 0;
+    if(!loaded)
+        var budgetArray = JSON.parse(responseText);
+    else 
+        var budgetArray = responseText;
+    var data = [];
 
+    for(i = 1; i < budgetArray.length; i++)
+        data.push(budgetArray[i]);
+
+
+    var colors = ["rgba(249, 83, 8, 0.5)", "rgba(249, 204, 8, 0.5)", "rgba(174, 249, 8, 0.5)", "rgba(54, 249, 8, 0.5)", 
+                "rgba(54, 249, 8, 0.5)", "rgba(8, 249, 83, 0.5)", "rgba(8, 249, 203, 0.5)", "rgba(8, 174, 249, 0.5)", 
+                "rgba(8, 54, 249, 0.5)", "rgba(83, 8, 249, 0.5)", "rgba(172, 8, 249, 0.5)", 
+                "rgba(203, 8, 249, 0.5)", "rgba(249, 8, 174, 0.5)", "rgba(249, 8, 54, 0.5)"];
     //Plot Data on chart using chart.js
     var config = {
         type: 'pie',
         data: {
-            labels: ['Utilities', 'Rent', 'Auto', 'Education', 'Healthcare', 'Groceries', 'Restaurants', 'Home', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+            labels: ['Income', 'Utilities', 'Rent', 'Auto + Gas', 'Education', 'Healthcare', 'Groceries', 'Restauramts', 'Home Improvement', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
             datasets: [{
             label: 'Overall Spending',
-            data: budgetArray,
-            backgroundColor: [
-                'rgba(28, 200, 14, 0.3)',
-                'rgba(70, 14, 200, 0.3)',
-                'rgba(200, 142, 14, 0.3)',
-                'rgba(238, 243, 252, 0.3)',
-                'rgba(1, 4, 5, 0.3)',
-                'rgba(224, 104, 6, 0.3)',
-                'rgba(227, 238, 228, 0.3)',
-                'rgba(60, 83, 82, 0.3)',
-                'rgba(42, 116, 81, 0.3)',
-                'rgba(46, 68, 116, 0.3)',
-                'rgba(236, 235, 234, 0.3)',
-                'rgba(61, 219, 86, 0.3)',
-                'rgba(0, 0, 0, 0.3)'
-            ]
+            data: data,
+            backgroundColor: colors
             }] 
         },
         options: {
@@ -292,19 +276,13 @@ function plotData(responseText) {
     };
     
     let ctx = document.getElementById('budgetChart');
-    ctx.height = 250;
+    if(!loaded)
+        ctx.height = 250;
 
 
     budgetChart = new Chart(ctx, config);
+    loaded = true;
 }
-
-
-
-
-
-
-
 
 // setup load event
 window.addEventListener("load", setup, true);
-
