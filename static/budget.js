@@ -2,6 +2,7 @@
 /******************************* Webpage Functions *******************************/
 var nav = false;
 var loaded = false;
+var dataRetrieved = false;
 
 //Navigation Bar
 function toggleNav() {
@@ -237,6 +238,7 @@ function addBudgetInfo(e, row, cell1, cell2, cell3, cell4) {
 
 //helper functions for budget pie chart
 function removeData(chart){
+    if(dataRetrieved)
         chart.data.datasets.pop();
 }
 
@@ -248,40 +250,46 @@ function plotData(responseText) {
         var budgetArray = responseText;
     var data = [];
 
-    for(i = 1; i < budgetArray.length; i++)
-        data.push(budgetArray[i]);
+    if(budgetArray == null) {
+        addAlert(0, "No Budget Created Yet!", "firstItem");
+    }
+    else {
+        for(i = 1; i < budgetArray.length; i++)
+            data.push(budgetArray[i]);
 
 
-    var colors = ["rgba(249, 83, 8, 0.5)", "rgba(249, 204, 8, 0.5)", "rgba(174, 249, 8, 0.5)", "rgba(54, 249, 8, 0.5)", 
-                "rgba(54, 249, 8, 0.5)", "rgba(8, 249, 83, 0.5)", "rgba(8, 249, 203, 0.5)", "rgba(8, 174, 249, 0.5)", 
-                "rgba(8, 54, 249, 0.5)", "rgba(83, 8, 249, 0.5)", "rgba(172, 8, 249, 0.5)", 
-                "rgba(203, 8, 249, 0.5)", "rgba(249, 8, 174, 0.5)", "rgba(249, 8, 54, 0.5)"];
-    //Plot Data on chart using chart.js
-    var config = {
-        type: 'pie',
-        data: {
-            labels: ['Income', 'Utilities', 'Rent', 'Auto + Gas', 'Education', 'Healthcare', 'Groceries', 'Restauramts', 'Home Improvement', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
-            datasets: [{
-            label: 'Overall Spending',
-            data: data,
-            backgroundColor: colors
-            }] 
-        },
-        options: {
-            legend: {
-                display: false,
+        var colors = ["rgba(249, 83, 8, 0.5)", "rgba(249, 204, 8, 0.5)", "rgba(174, 249, 8, 0.5)", "rgba(54, 249, 8, 0.5)", 
+                    "rgba(54, 249, 8, 0.5)", "rgba(8, 249, 83, 0.5)", "rgba(8, 249, 203, 0.5)", "rgba(8, 174, 249, 0.5)", 
+                    "rgba(8, 54, 249, 0.5)", "rgba(83, 8, 249, 0.5)", "rgba(172, 8, 249, 0.5)", 
+                    "rgba(203, 8, 249, 0.5)", "rgba(249, 8, 174, 0.5)", "rgba(249, 8, 54, 0.5)"];
+        //Plot Data on chart using chart.js
+        var config = {
+            type: 'pie',
+            data: {
+                labels: ['Income', 'Utilities', 'Rent', 'Auto + Gas', 'Education', 'Healthcare', 'Groceries', 'Restauramts', 'Home Improvement', 'Shopping', 'Entertainment', 'Travel', 'Savings', 'Other'],
+                datasets: [{
+                label: 'Overall Spending',
+                data: data,
+                backgroundColor: colors
+                }] 
+            },
+            options: {
+                legend: {
+                    display: false,
+                }
             }
-        }
 
-    };
-    
-    let ctx = document.getElementById('budgetChart');
-    if(!loaded)
-        ctx.height = 250;
+        };
+        
+        let ctx = document.getElementById('budgetChart');
+        if(!loaded || !dataRetrieved)
+            ctx.height = 250;
 
 
-    budgetChart = new Chart(ctx, config);
-    loaded = true;
+        budgetChart = new Chart(ctx, config);
+        dataRetrieved = true;
+    }
+    loaded = true; 
 }
 
 // setup load event

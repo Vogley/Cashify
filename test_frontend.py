@@ -296,25 +296,26 @@ class MyTracker(Resource):
             balances.append(round(tSum, 2))
 
         #Gather the data points
-        now = datetime.now().date()
+        now = datetime.now()
+        now = now.date()
         firstDayOfMonth = date(now.year, now.month, 1)
 
         userBudget = account.budget
-
-        #Get User's budgets
-        budgets = [ userBudget.other,  userBudget.income,  userBudget.utilities,  userBudget.rent, \
-             userBudget.auto_gas,  userBudget.education,  userBudget.healthcare,  userBudget.groceries, \
-                 userBudget.restaurants,  userBudget.home_improvement,  userBudget.shopping,  userBudget.entertainment, \
-                     userBudget.travel,  userBudget.savings]
-
-        #Gather the data points for each category
-        balanceIterator = 0
         trackerResponse = []
-        trackerResponse.append(budgets)
-        trackerResponse.append(balances[1:])
-        for t in pastMonthTransactions:
-            trackerResponse.append(getLastNDays(t, balances[balanceIterator], abs(now-firstDayOfMonth).days))
-            balanceIterator+=1
+        if userBudget != None:
+        #Get User's budgets
+            budgets = [ userBudget.other,  userBudget.income,  userBudget.utilities,  userBudget.rent, \
+                userBudget.auto_gas,  userBudget.education,  userBudget.healthcare,  userBudget.groceries, \
+                    userBudget.restaurants,  userBudget.home_improvement,  userBudget.shopping,  userBudget.entertainment, \
+                        userBudget.travel,  userBudget.savings]
+
+            #Gather the data points for each category
+            balanceIterator = 0
+            trackerResponse.append(budgets)
+            trackerResponse.append(balances[1:])
+            for t in pastMonthTransactions:
+                trackerResponse.append(getLastNDays(t, balances[balanceIterator], abs(now-firstDayOfMonth).days))
+                balanceIterator+=1
 
         return trackerResponse
 

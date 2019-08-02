@@ -128,126 +128,129 @@ function makeHandler(httpRequest, retCode, action) {
 function plotData(responseText) {
     //Collecting data from python
     console.log("populating chart!");
-    transactionArray = JSON.parse(responseText); 
-    
-    /* Transaction Array = ['All budgets', 'Current Balances', 'All Transactions', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other'] */
-    var budgets = transactionArray[0];
-    var currBalances = transactionArray[1];
-    var allTransactions = transactionArray[2];
+    transactionArray = JSON.parse(responseText);
+    if(transactionArray != null) {
+        /* Transaction Array = ['All budgets', 'Current Balances', 'All Transactions', 'Income', 'Rent', 'Education', 'Groceries', 'Home Improvement', 'Entertainment', 'Savings', 'Utilities', 'Auto', 'Healthcare', 'Restaurants', 'Shopping', 'Travel', 'Other'] */
+        var budgets = transactionArray[0];
+        var currBalances = transactionArray[1];
+        var allTransactions = transactionArray[2];
 
-    for(i = 0; i < budgets.length; i++) {
-        if(budgets[i] == null) {
-            currBalances.splice(i, 1);
-            categories.splice(i, 1);
-        }
-        else
-            currBalances[i] = Math.abs(currBalances[i]);     
-    }
-
-
-    document.getElementById("budgetTitle").innerHTML = "Month of " + moment().format("MMMM");
-    setLabels();
-
-    /* Line Graph */
-    //Plot Data on line graph using chart.js
-    var config = {
-        type: 'line',
-        data: {
-            labels: labels,
-            datasets: [{
-            label: "All Transactions",
-            data: allTransactions,
-            backgroundColor: "rgba(55, 167, 10, 0.2)",
-            borderColor: "rgba(55, 167, 10, 1)",
-            pointBorderColor: "rgba(55, 167, 10, 1)",
-            pointBackgroundColor: "rgba(55, 167, 10, 1)",
-            pointBorderColor: "rgba(55, 167, 10, 1)",
-            }]
-        },
-        options: {
-            legend: {
-                display: false,
-                labels: {
-                    boxWidth: 20,
-                    fontSize: 10
+        if(budgets != null) {
+            for(i = 0; i < budgets.length; i++) {
+                if(budgets[i] == null) {
+                    currBalances.splice(i, 1);
+                    categories.splice(i, 1);
                 }
+                else
+                    currBalances[i] = Math.abs(currBalances[i]);     
+            }
+        }
+
+
+        document.getElementById("budgetTitle").innerHTML = "Month of " + moment().format("MMMM");
+        setLabels();
+
+        /* Line Graph */
+        //Plot Data on line graph using chart.js
+        var config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                label: "All Transactions",
+                data: allTransactions,
+                backgroundColor: "rgba(55, 167, 10, 0.2)",
+                borderColor: "rgba(55, 167, 10, 1)",
+                pointBorderColor: "rgba(55, 167, 10, 1)",
+                pointBackgroundColor: "rgba(55, 167, 10, 1)",
+                pointBorderColor: "rgba(55, 167, 10, 1)",
+                }]
             },
-            scaleStartValue: 1,
+            options: {
+                legend: {
+                    display: false,
+                    labels: {
+                        boxWidth: 20,
+                        fontSize: 10
+                    }
+                },
+                scaleStartValue: 1,
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: "day",
+                            displayFormats: {
+                                day: 'MMM D'
+                            }
+                        }
+                    }],
+                },
+            }
+        };
+        
+        let ctx1 = document.getElementById('trackerChart');
+        ctx1.height = 250;
+
+        trackerLine = new Chart(ctx1, config);
+
+        
+        /* Bar Graph */
+        //Plot Data on Bar Graph with Actual Spending and Goals
+
+        colors1 = []
+        colors2 = []
+        for(i = 0; i < colors.length; i++) {
+            colors1.push(colors[i] + " 0.2)");
+            colors2.push(colors[i] + " 1)");
+        }
+        
+        var config = {
+            type: 'bar',
+            data: {
+            labels: categories,
+            datasets: [
+                {
+                    label: "Goal",
+                    backgroundColor: colors1,
+                    data: budgets,
+                    borderColor: "#000",
+                    borderWidth: 1
+                },
+                {
+                label: "Deposits/Withdrawls",
+                backgroundColor: colors2,
+                data: currBalances
+                }
+            ]
+            },
+            options: {
+            legend: { display: false },
+            title: {
+                display: true,
+                text: 'Seperated By Category'
+            },
             scales: {
                 xAxes: [{
-                    type: 'time',
-                    time: {
-                        unit: "day",
-                        displayFormats: {
-                            day: 'MMM D'
-                        }
-                    }
+                stacked: true,
+                display: false
                 }],
-            },
-        }
-    };
-    
-    let ctx1 = document.getElementById('trackerChart');
-    ctx1.height = 250;
-
-    trackerLine = new Chart(ctx1, config);
-
-    
-    /* Bar Graph */
-    //Plot Data on Bar Graph with Actual Spending and Goals
-
-    colors1 = []
-    colors2 = []
-    for(i = 0; i < colors.length; i++) {
-        colors1.push(colors[i] + " 0.2)");
-        colors2.push(colors[i] + " 1)");
-    }
-    
-    var config = {
-        type: 'bar',
-        data: {
-          labels: categories,
-          datasets: [
-            {
-                label: "Goal",
-                backgroundColor: colors1,
-                data: budgets,
-                borderColor: "#000",
-                borderWidth: 1
-            },
-            {
-              label: "Deposits/Withdrawls",
-              backgroundColor: colors2,
-              data: currBalances
+                yAxes: [{
+                    stacked: false,
+                    ticks: {
+                    beginAtZero: true
+                    },
+                }]
             }
-          ]
-        },
-        options: {
-          legend: { display: false },
-          title: {
-            display: true,
-            text: 'Seperated By Category'
-          },
-          scales: {
-            xAxes: [{
-              stacked: true,
-              display: false
-            }],
-              yAxes: [{
-                stacked: false,
-                ticks: {
-                  beginAtZero: true
-                },
-              }]
-          }
-        }
-    };
-    
-    let ctx2 = document.getElementById('CategoryBars');
-    ctx2.height = 250;
+            }
+        };
+        
+        let ctx2 = document.getElementById('CategoryBars');
+        ctx2.height = 250;
 
 
-    categoryBars = new Chart(ctx2, config);
+        categoryBars = new Chart(ctx2, config);
+    } 
 }
 
 
